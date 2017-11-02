@@ -8,4 +8,9 @@ class Main < Sinatra::Base
         erb :new
     end
 
+    get '/chart' do
+        "this is a chart"
+        erb :chart
+    end
+
 end
