@@ -1,16 +1,23 @@
 /* https://material.io/color/#!/?view.left=0&view.right=0&primary.color=40ff80&secondary.color=F48FB1 */
 
 * {
-	font-family: sans-serif;
+	font-family: 'Roboto', sans-serif;
+}
+
+body, p {
 	margin: 0;
 	padding: 0;
 }
 
 header {
-	padding: 8px;
-	background-color: rgba(0, 255, 85, 0.75);
-	background-color: rgba(64, 255, 128);
-	background-color: #40ff80;
+	height: 64px;
+	padding-left: 16px;
+	background-color: #37474f;
+	color: white;
+}
+
+header a {
+	color: white;
 }
 
 #lineChart {
