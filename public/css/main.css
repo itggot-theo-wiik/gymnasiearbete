@@ -9,6 +9,10 @@ body, p {
 	padding: 0;
 }
 
+main {
+	padding: 8px;
+}
+
 header {
 	height: 64px;
 	padding-left: 16px;
@@ -23,4 +27,24 @@ header a {
 #lineChart {
 	width: calc(100vw - 64);
 	max-width: 800px;
+}
+
+.column {
+	display: flex;
+	flex-direction: column;
+}
+
+.removeBorder {
+	border: 0px;
+}
+
+.question {
+	margin-bottom: 10px;
+	display: flex;
+	flex-direction: column;
+}
+
+.center {
+	margin-left: auto;
+	margin-right: auto;
 }
