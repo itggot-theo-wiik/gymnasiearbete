@@ -1,18 +1,57 @@
 <form>
-    <label for="username">Användarnamn: </label>
-    <input type="text" name="username"></input>
+    <div class="column">
+        <div class="question">
+            <label for="username_account">Användarnamn: </label>
+            <input type="text" name="username_account"></input>
+        </div>
 
-    <label for='goals'>Vad har du för mål med din träning?: </label>
+        <div class="question">
+            <label for="mail">Mail: </label>
+            <input type="text" name="mail"></input>
+        </div>
+        
+        <div class="question">
+            <label for="password">Lösenord: </label>
+            <input type="password" name="password"></input>
+        </div>
 
-    <select name="goals">
-        <option value="1">Bygga synliga muskler</option>
-        <option value="2">Förbättra min hälsa</option>
-        <option value="3">Gå ner i vikt</option>
-        <option value="4">Gå upp i vikt</option>
-        <option value="5">Förbättra min kondition</option>
-        <option value="6"></option>
-        <option value="7"></option>
-    </select>
-    
-    <button type='submit'>Ok</button>
+        <div class="question">
+            <label for='goals'>Vad har du för mål med din träning?: </label>
+            <select name="goals">
+                <option value="1">Bygga synliga muskler</option>
+                <option value="2">Förbättra min hälsa</option>
+                <option value="3">Gå ner i vikt</option>
+                <option value="4">Gå upp i vikt</option>
+                <option value="5">Förbättra min kondition</option>
+            </select>
+        </div>
+
+        <div class="question center">
+            <fieldset class="removeBorder" name="strictness">
+                <legend>Hur strikt skall schemat vara?</legend>
+                <input type="radio" name="radio" id="radio" value="1">
+                <label for="radio1">Lite</label>
+
+                <input type="radio" name="radio" id="radio" value="2">
+                <label for="radio2">Medel</label>
+
+                <input type="radio" name="radio" id="radio" value="3">
+                <label for="radio3">Mycket</label>
+            </fieldset>
+        </div>
+
+        <fieldset>
+            <legend>Choose your interests</legend>
+            <div>
+                <input type="checkbox" id="coding" name="interest" value="coding">
+                <label for="coding">Coding</label>
+            </div>
+            <div>
+                <input type="checkbox" id="music" name="interest" value="music">
+                <label for="music">Music</label>
+            </div>
+        </fieldset>
+        
+        <button type='submit'>Ok</button>
+    </div>
 </form>

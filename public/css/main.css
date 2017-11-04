@@ -243,4 +243,22 @@ li {
 
 @media (min-width: 900px) {
 
+.column {
+	display: flex;
+	flex-direction: column;
+}
+
+.removeBorder {
+	border: 0px;
+}
+
+.question {
+	margin-bottom: 10px;
+	display: flex;
+	flex-direction: column;
+}
+
+.center {
+	margin-left: auto;
+	margin-right: auto;
 }
