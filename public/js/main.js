@@ -1,17 +1,14 @@
 function dontRun() {
-
-    console.log("i am alvie")
-
     x = [];
     y = [];
     
-    var times = Math.floor((Math.random() * 20) + 1);
+    var times = Math.floor(rand());
     for(var i=0; i < times; i++){
         x.push(i);
         y.push(50 + rand());
     };
     
-    if (Math.floor((Math.random() * 20) + 1) > 10) {
+    if (rand() > 10) {
         var color = ["#64ffda", "#9effff"];
     } else {
         var color = ["#40ff80", "#83ffb1"];
