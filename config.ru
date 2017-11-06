@@ -8,7 +8,7 @@ Bundler.require
 require_relative 'main.rb'
 
 #Models
-# require_relative 'link to ruby file'
+require_relative 'models/users.rb'
 
 #Makes SLIM pretty :o \(^ v ^)/
 Slim::Engine.set_options pretty: true, sort_attrs: false

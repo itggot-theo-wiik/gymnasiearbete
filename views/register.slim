@@ -1,14 +1,18 @@
 form
   .column
+
     .question
       label for="username_account"  Användarnamn:
       input name="username_account" type="text" /
+
     .question
       label for="mail"  Mail:
       input name="mail" type="text" /
+
     .question
       label for="password"  Lösenord:
       input name="password" type="password" /
+
     .question
       label for="goals"  Vad har du för mål med din träning?:
       select name="goals"
@@ -17,6 +21,7 @@ form
 		option value="3"  Gå ner i vikt
 		option value="4"  Gå upp i vikt
 		option value="5"  Förbättra min kondition
+
     .question.center
       fieldset.removeBorder name="strictness"
         legend Hur strikt skall schemat vara?
@@ -26,12 +31,15 @@ form
         label for="radio2"  Medel
         input#radio name="radio" type="radio" value="3" /
         label for="radio3"  Mycket
+
     fieldset
       legend Choose your interests
       div
         input#coding name="interest" type="checkbox" value="coding" /
         label for="coding"  Coding
+
       div
         input#music name="interest" type="checkbox" value="music" /
         label for="music"  Music
+
     button type="submit"  Ok
