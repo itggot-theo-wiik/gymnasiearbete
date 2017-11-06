@@ -1,14 +1,14 @@
 class Main < Sinatra::Base
     get '/' do
-        erb :home
+        slim :home
     end
 
     get '/register' do
-        erb :new
+        slim :register
     end
 
     get '/chart' do
-        erb :chart
+        slim :chart
     end
 
 end
