@@ -12,7 +12,7 @@ html
 	link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" /
   
   body
-	header
+	header.gray_background
 	  /! <img src="./img/ic_menu_white_48px.svg" class="icon" id="burger" onclick="toggle_shadow(); toggle_leave()"
 	  i#burger.material-icons.icon onclick=("toggle_shadow(); toggle_leave()")  menu
 	  h2 Healthy
@@ -35,23 +35,23 @@ html
 				  /! <img src="./img/joe_danger_profile.png" class="profile_icon2" id="nav_icon" /
 				p.black87 joe.danger@gmail.com
 			a href="/" 
-			  li
+			  li.nav_list_48px
 				i#nav_icon.material-icons home
 				p.black87 Home
 			a href="/" 
-			  li
+			  li.nav_list_48px
 				i#nav_icon.material-icons date_range
 				p.black87 Schema
 			a href="/chart" 
-			  li
+			  li.nav_list_48px
 				i#nav_icon.material-icons show_chart
 				p.black87 Vikt logg
 			a href="/register" 
-			  li
+			  li.nav_list_48px
 				i#nav_icon.material-icons person
 				p.black87 Min Profil
 			a href="/" 
-			  li
+			  li.nav_list_48px
 				i#nav_icon.material-icons help
 				p.black87text_opacity_87 Om oss
 	  .nav_leave onclick=("toggle_shadow(); toggle_leave()") 

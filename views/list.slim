@@ -1,5 +1,7 @@
+h3 List över alla användare
+
 ol
     - for user in @users
-        li
-            a href="/users/#{user.id}"
-            = user.username
+        a.dark_blue href="/users/#{user.id}"
+            li
+                = user.username

@@ -12,6 +12,10 @@ class Main < Sinatra::Base
         slim :list
     end
 
+    get '/users/:id' do
+        'A user'
+    end
+
     get '/chart' do
         slim :chart
     end

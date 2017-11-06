@@ -1,4 +1,4 @@
-/* https://material.io/color/#!/?view.left=0&view.right=0&primary.color=40ff80&secondary.color=F48FB1 */
+/* https://material.io/color/#!/?view.left=0&view.right=0&secondary.color=64FFDA&primary.color=37474F */
 
 * {
     font-family: 'Roboto', sans-serif;
@@ -44,12 +44,63 @@ a {
     color: inherit;
 }
 
+
+/* COLORS */
+
 .white {
     color: white;
 }
 
 .black87 {
     color: rgba(0, 0, 0, 0.87);
+}
+
+.gray {
+    color: #37474f;
+}
+
+.gray_background {
+    background-color: #37474f;
+}
+
+.light_gray {
+    color: #62727b;
+}
+
+.light_gray_background {
+    background-color: #62727b;
+}
+
+.dark_gray {
+    color: #102027;
+}
+
+.dark_gray_background {
+    background-color: #102027;
+}
+
+.blue {
+    color: #14cba8;
+}
+
+.blue_background {
+    background-color: #14cba8;
+}
+
+.light_blue {
+    color: #9effff;
+}
+
+.light_blue_background {
+    background-color: #9effff;
+}
+
+.dark_blue {
+    color: #14cba8;
+}
+
+.dark_blue_background {
+    background-color: #14cba8;
 }
 
 
@@ -91,7 +142,7 @@ header a {
 }
 
 header {
-    background-color: #2196f3;
+    /* background-color: #2196f3; */
     width: 100%;
     height: 56px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
@@ -215,7 +266,7 @@ nav {
     background-size: cover;
 }
 
-li {
+.nav_list_48px {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -246,6 +297,17 @@ li {
     display: block;
     width: 304px;
     transition: 1s ease;
+}
+
+#burger {
+    -webkit-user-select: none;
+    /* Safari */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* IE10+/Edge */
+    user-select: none;
+    /* Standard */
 }
 
 
