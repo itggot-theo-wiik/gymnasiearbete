@@ -25,6 +25,14 @@ a {
     color: black;
 }
 
+.header {
+    font-weight: 300;
+}
+
+h1 {
+
+}
+
 h2 {
     color: white;
     margin-left: 20px;
