@@ -13,7 +13,9 @@ class Main < Sinatra::Base
     end
 
     get '/users/:id' do
-        'A user'
+        id = params['id'].to_i
+        @user = Users.one(id)
+        slim :show
     end
 
     get '/chart' do
