@@ -20,8 +20,7 @@ class Users
 
     def self.one(id)
         db = SQLite3::Database.open('db/db.sqlite')
-        p id
-        user = db.execute('SELECT * FROM users WHERE id IS ?', id)
+        user = db.execute('SELECT * FROM users WHERE id IS ?', id).first
         return Users.new(user)
     end
 

@@ -1,0 +1,155 @@
+/*---NAVIGATION---*/
+
+nav {
+    position: fixed;
+    position: absolute;
+    /*width: 100vw;*/
+    height: 100vh;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    left: -304px;
+}
+
+.nav_header1 {
+    display: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.nav_main {
+    width: 304px;
+    /*width: 0px;*/
+    height: 100vh;
+    min-height: 700px;
+    background-color: #fafafa;
+    z-index: 3;
+    position: fixed;
+}
+
+.nav_leave {
+    display: none;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    position: fixed;
+    z-index: 2;
+}
+
+.profile_icon {
+    height: 64px;
+    border-radius: 100px;
+    margin-bottom: 40px;
+    margin-top: 16px;
+}
+
+.nav_header {
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    background-image: url(../img/nav_header.png);
+    background-size: cover;
+    margin-bottom: 16px;
+}
+
+.nav_header_text {
+    margin-left: 16px;
+    margin-bottom: 20px;
+}
+
+.nav_header_img {
+    margin-left: 16px;
+}
+
+#nav_icon {
+    padding-right: 35px;
+    margin-left: 16px;
+    color: rgba(0, 0, 0, 0.54);
+    height: 34px;
+    width: 34px;
+    margin-top: 6px;
+}
+
+.profile_icon2 {
+    margin-right: 35px;
+    margin-left: 16px;
+    height: 34px;
+    width: 34px;
+    margin-top: 6px;
+    border-radius: 100px;
+    background-image: url(../img/joe_danger_profile.png);
+    background-size: cover;
+}
+
+.nav_list_48px {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 48px;
+}
+
+
+/*---JS---*/
+
+.nav_is_visible {
+    display: block;
+}
+
+.nav_shadow_is_visible {
+    -webkit-box-shadow: 0px 0px 108px 137px rgba(0, 0, 0, 0.27);
+    -moz-box-shadow: 0px 0px 108px 137px rgba(0, 0, 0, 0.27);
+    box-shadow: 0px 0px 108px 137px rgba(0, 0, 0, 0.27);
+    transition: 1s ease;
+    box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
+}
+
+.animate {
+    height: 0px;
+    transition: height 1s;
+}
+
+.burger {
+    display: block;
+    width: 304px;
+    transition: 1s ease;
+}
+
+#burger {
+    -webkit-user-select: none;
+    /* Safari */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* IE10+/Edge */
+    user-select: none;
+    /* Standard */
+}
+
+
+/*---NAV SKUGGA---*/
+
+@media (min-width: 450px) {
+    .nav_shadow_is_visible {
+        box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
+    }
+}
+
+
+/*---MINI MOBILER---*/
+
+@media (max-width: 400px) {
+    .nav_header {
+        display: none;
+    }
+    .nav_main {
+        width: 270px;
+    }
+    .nav_header1 {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+}
