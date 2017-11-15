@@ -12,9 +12,12 @@ class Main < Sinatra::Base
     end
 
     post '/register' do
+        # db = SQLite3::Database.open('db/db.sqlite')
         username = params['username_account']
         password = params['password']
         mail = params['mail']
+        goals = params['goals']
+        strictness = params['strictness']
         day1 = params['day1']
         day2 = params['day2']
         day3 = params['day3']
@@ -25,8 +28,21 @@ class Main < Sinatra::Base
         puts "------------------------------"
         p day1
         p day2
-        p day
+        p day3
+        p day4
+        p day5
+        p day6
+        p day7
+        p username
+        p password
+        p mail
+        p goals
+        p "@@@@@@@@@@@@@@@@@@@@2"
+        p strictness
         puts "------------------------------"
+
+        db.execute('INSERT INTO users (username, email, first_name, last_name, password, points) VALUES ("användarnman","email", "första namn", "efternamn", "lösenord", 0)', [username, password, mail])
+
         redirect :'/register'
     end
 
