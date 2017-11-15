@@ -11,6 +11,12 @@ nav {
     left: -304px;
 }
 
+.nav_login {
+    position: absolute;
+    right: 0;
+    padding-right: 46px;
+}
+
 .nav_header1 {
     display: none;
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
