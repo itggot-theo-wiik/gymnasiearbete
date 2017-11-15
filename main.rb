@@ -57,8 +57,16 @@ class Main < Sinatra::Base
         slim :show
     end
 
-    get '/chart' do
-        slim :chart
+    get '/weight' do
+        slim :weight
     end
 
+    post '/weight' do
+        weight = params['new_weight'].to_i
+        db = SQLite3::Database.open('db/db.sqlite')
+        date = Time.now.strftime("%Y%m%d %H%M")
+
+        db.execute('INSERT INTO weights (kg, date, user_id) VALUES (?,?,?)', [weight, date, 1])
+        redirect '/weight'
+    end
 end
