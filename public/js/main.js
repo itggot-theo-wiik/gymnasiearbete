@@ -22,6 +22,7 @@ function rand() {
     return Math.floor((Math.random() * 20) + 1)
 };
 
+// Show the graph
 function drawGraph(x, y, color) {
     const CHART = document.getElementById('lineChart');
     let lineChart = new Chart(CHART, {

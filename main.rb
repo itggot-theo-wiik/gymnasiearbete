@@ -1,4 +1,7 @@
 class Main < Sinatra::Base
+
+    enable :sessions
+
     get '/' do
         slim :home
     end
@@ -7,14 +10,45 @@ class Main < Sinatra::Base
         slim :login
     end
 
+    post '/login' do
+        username = params['login_username']
+        password = params['login_password']
+
+        db = SQLite3::Database.open('db/db.sqlite')
+        password_encrypted = db.execute('SELECT password FROM users WHERE username IS ?', username).first.first
+        password_decrypted = BCrypt::Password.new(password_encrypted)
+
+        if password_decrypted == password
+            id = db.execute('SELECT id FROM users WHERE username IS ?', username).first.first
+            session[:user] = id
+            redirect '/my-profile'
+        else
+            redirect '/login'
+        end
+
+    end
+
+    get '/my-profile' do
+        if session[:user]
+            id = session[:user]
+            @user = Users.one(id)
+            slim :'my-profile'
+        else
+            redirect '/login'
+        end
+    end
+
     get '/register' do
         slim :register
     end
 
     post '/register' do
-        # db = SQLite3::Database.open('db/db.sqlite')
+        db = SQLite3::Database.open('db/db.sqlite')
         username = params['username_account']
+        fname = params['fname']
+        lname = params['lname']
         password = params['password']
+        password = BCrypt::Password.create(password)
         mail = params['mail']
         goals = params['goals']
         strictness = params['strictness']
@@ -25,25 +59,14 @@ class Main < Sinatra::Base
         day5 = params['day5']
         day6 = params['day6']
         day7 = params['day7']
-        puts "------------------------------"
-        p day1
-        p day2
-        p day3
-        p day4
-        p day5
-        p day6
-        p day7
-        p username
-        p password
-        p mail
-        p goals
-        p "@@@@@@@@@@@@@@@@@@@@2"
-        p strictness
-        puts "------------------------------"
 
-        db.execute('INSERT INTO users (username, email, first_name, last_name, password, points) VALUES ("användarnman","email", "första namn", "efternamn", "lösenord", 0)', [username, password, mail])
+        db.execute('INSERT INTO users (username, email, first_name, last_name, password, points) VALUES (?,?,?,?,?,?)', [username, mail, fname, lname, password, 0])
 
-        redirect :'/register'
+        redirect :'/my-profile'
+    end
+
+    get '/schedule' do
+        slim :schedule
     end
 
     get '/users' do
@@ -57,16 +80,47 @@ class Main < Sinatra::Base
         slim :show
     end
 
+    get '/log-out' do
+        session.destroy
+        redirect '/login'
+    end
+
     get '/weight' do
-        slim :weight
+        if session[:user]
+            db = SQLite3::Database.open('db/db.sqlite')
+            id = session[:user]
+            x = db.execute('SELECT date FROM weights WHERE user_id IS ?', id)
+            y = db.execute('SELECT kg FROM weights WHERE user_id IS ?', id)
+
+            @date_arr = []
+            x.each do |z|
+                @date_arr << z.first
+            end
+
+            @kg_arr = []
+            y.each do |z|
+                @kg_arr << z.first
+            end
+
+            @color = ["#64ffda", "#9effff"]
+            p "--------------------------------------------------------------"
+            slim :weight
+        else
+            redirect '/login'
+        end
     end
 
     post '/weight' do
-        weight = params['new_weight'].to_i
-        db = SQLite3::Database.open('db/db.sqlite')
-        date = Time.now.strftime("%Y%m%d %H%M")
+        if session[:user]
+            weight = params['new_weight'].to_i
+            db = SQLite3::Database.open('db/db.sqlite')
+            date = Time.now.strftime("%Y-%m-%d %H:%M")
+            id = session[:user]
 
-        db.execute('INSERT INTO weights (kg, date, user_id) VALUES (?,?,?)', [weight, date, 1])
-        redirect '/weight'
+            db.execute('INSERT INTO weights (kg, date, user_id) VALUES (?,?,?)', [weight, date, id])
+            redirect '/weight'
+        else
+            redirect '/login'
+        end
     end
 end

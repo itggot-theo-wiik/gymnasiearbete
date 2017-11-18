@@ -1,5 +1,15 @@
-form action="/register" method="post"
+h1.header.login_text Skapa ett nytt konto
+
+form.margin_bottom_16px action="/register" method="post"
   .column
+
+    .question
+      label for="fname"  Förnamn:
+      input name="fname" type="text" /
+
+    .question
+      label for="lname"  Efternamn:
+      input name="lname" type="text" /
 
     .question
       label for="username_account"  Användarnamn:
@@ -25,11 +35,11 @@ form action="/register" method="post"
     .question.center
       fieldset.removeBorder name="strictness"
         legend Hur strikt skall schemat vara?
-        input#radio name="radio" type="radio" value="1" /
+        input#radio name="strictness" type="radio" value="1" /
         label for="radio1"  Lite
-        input#radio name="radio" type="radio" value="2" /
+        input#radio name="strictness" type="radio" value="2" /
         label for="radio2"  Medel
-        input#radio name="radio" type="radio" value="3" /
+        input#radio name="strictness" type="radio" value="3" /
         label for="radio3"  Mycket
 
     fieldset
@@ -64,3 +74,9 @@ form action="/register" method="post"
         label for="sunday"  Söndag
 
     button type="submit"  Ok
+
+h1.header Har du redan ett konto?
+
+button
+  a href="/login"
+    | Logga in

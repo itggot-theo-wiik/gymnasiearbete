@@ -18,8 +18,25 @@ main {
     padding-top: 70px;
 }
 
+.schedule {
+}
+
+
+/* Button */
+
+button {
+    /* padding: 8px;
+    width: 80px; */
+}
+
+.margin_bottom_16px {
+    margin-bottom: 16px;
+}
+
 
 /* TEXT */
+
+
 /* 
 a {
     color: black;
@@ -52,6 +69,14 @@ a {
 
 .white {
     color: white;
+}
+
+.white87 {
+    color: rgba(255, 255, 255, 0.87)
+}
+
+.black {
+    color: black;
 }
 
 .black87 {
@@ -182,8 +207,9 @@ header {
     padding: 16px;
 }
 
+
 /* Login Screen */
 
 .login_text {
-    margin-bottom:16px;
+    margin-bottom: 16px;
 }
