@@ -24,6 +24,9 @@ function rand() {
 
 // Show the graph
 function drawGraph(x, y, color) {
+
+    console.log("PING")
+
     const CHART = document.getElementById('lineChart');
     let lineChart = new Chart(CHART, {
         type: 'line',

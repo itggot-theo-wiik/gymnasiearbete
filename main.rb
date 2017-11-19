@@ -103,7 +103,7 @@ class Main < Sinatra::Base
             end
 
             @color = ["#64ffda", "#9effff"]
-            p "--------------------------------------------------------------"
+            
             slim :weight
         else
             redirect '/login'

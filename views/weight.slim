@@ -1,3 +1,10 @@
+h1.header Vikthistorik
+
+- if @kg_arr.first
+    h3.header Din historik
+- else
+    h3.header Du har inte loggat någon vikt, gör det nu!
+
 canvas#lineChart height="300" width="400"
 
 .hello onclick="drawGraph(#{@date_arr}, #{@kg_arr}, #{@color})"
