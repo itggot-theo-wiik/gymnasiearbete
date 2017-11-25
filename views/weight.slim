@@ -7,10 +7,32 @@ h1.header Vikthistorik
 
 canvas#lineChart height="300" width="400"
 
-.hello onclick="drawGraph(#{@date_arr}, #{@kg_arr}, #{@color})"
+- if session[:local]
+    h3.header Måste vara mer än 0
+
+.hello onClick="drawGraph(#{@date_arr}, #{@kg_arr}, #{@color})"
+/ .divvv onload="drawGraph()"
 
 form action="/weight" method="post"
     label for="new_weight"
     input type="text" name="new_weight"
 
     button type="submit" Lägg till
+
+
+/ script
+/     | function drawGraph() {
+/     | const CHART = document.getElementById('lineChart');
+/     | let lineChart = new Chart(CHART, {
+/     | type: 'line',
+/     | data: {
+/     | labels: | [1,2,3,4,5],
+/     | datasets: [{
+/     | label: "Kilogram",
+/     | borderColor: "#D7ECFD",
+/     | backgroundColor: "#008080",
+/     | data: | [1,2,3,4,5],
+/     | }],
+/     | }
+/     | });
+/     | }

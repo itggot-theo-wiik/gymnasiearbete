@@ -27,7 +27,12 @@ html
 			img.profile_icon src="/img/joe_danger_profile.png" /
 		  .nav_header_text
 			/! <h3>Joe Danger</h3
-			p.white joe.danger@gmail.com
+			- if session[:user]
+				p.white
+					= @user.email
+			- else
+				a href="/login"
+					p.white Logga in
 		.nav_list
 		  ul
 			a href="index.html" 

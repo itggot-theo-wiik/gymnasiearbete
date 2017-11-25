@@ -1,19 +1,19 @@
 function dontRun() {
     x = [];
     y = [];
-    
+
     var times = Math.floor(rand());
-    for(var i=0; i < times; i++){
+    for (var i = 0; i < times; i++) {
         x.push(i);
         y.push(50 + rand());
     };
-    
+
     if (rand() > 10) {
         var color = ["#64ffda", "#9effff"];
     } else {
         var color = ["#40ff80", "#83ffb1"];
     };
-    
+
     drawGraph(x, y, color)
 
 }
@@ -25,21 +25,17 @@ function rand() {
 // Show the graph
 function drawGraph(x, y, color) {
 
-    console.log("PING")
-
     const CHART = document.getElementById('lineChart');
     let lineChart = new Chart(CHART, {
         type: 'line',
         data: {
             labels: x,
-            datasets: [
-                {
-                    label: "Kilogram",
-                    borderColor: color[0],
-                    backgroundColor: color[1],
-                    data: y,
-                }
-            ],
+            datasets: [{
+                label: "Kilogram",
+                borderColor: color[0],
+                backgroundColor: color[1],
+                data: y,
+            }],
         }
     });
 };
@@ -57,18 +53,22 @@ function toggle_leave() {
 };
 
 // Animera Hamburgar menyn
-$(document).ready(function() {
-    $("#burger").click(function() {
+$(document).ready(function () {
+    $("#burger").click(function () {
         $("nav").animate({
             left: '0px'
         });
     });
 });
 
-$(document).ready(function() {
-    $(".nav_leave").click(function() {
+$(document).ready(function () {
+    $(".nav_leave").click(function () {
         $("nav").animate({
             left: '-304px'
         });
     });
 });
+
+function superF() {
+    console.log("Ping Pong CHING chong!")
+}

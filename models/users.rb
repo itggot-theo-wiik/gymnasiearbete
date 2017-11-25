@@ -1,5 +1,4 @@
 class Users
-
     attr_reader :id, :username, :email, :first_name, :last_name, :password, :points
 
     def initialize(user)

@@ -3,6 +3,10 @@ class Main < Sinatra::Base
     enable :sessions
 
     get '/' do
+        if session[:user]
+            @user = Users.one(session[:user].to_i)
+        end
+
         slim :home
     end
 
@@ -60,7 +64,14 @@ class Main < Sinatra::Base
         day6 = params['day6']
         day7 = params['day7']
 
-        db.execute('INSERT INTO users (username, email, first_name, last_name, password, points) VALUES (?,?,?,?,?,?)', [username, mail, fname, lname, password, 0])
+        # Check if the username already exist, and the mail
+        varr = db.execute('SELECT username FROM users WHERE username IS ?', username)
+
+        p "-----------------------"
+        p varr
+        p "-----------------------"
+
+        # db.execute('INSERT INTO users (username, email, first_name, last_name, password, points) VALUES (?,?,?,?,?,?)', [username, mail, fname, lname, password, 0])
 
         redirect :'/my-profile'
     end
@@ -111,16 +122,23 @@ class Main < Sinatra::Base
     end
 
     post '/weight' do
-        if session[:user]
-            weight = params['new_weight'].to_i
-            db = SQLite3::Database.open('db/db.sqlite')
-            date = Time.now.strftime("%Y-%m-%d %H:%M")
-            id = session[:user]
+        weight = params['new_weight'].to_f
 
-            db.execute('INSERT INTO weights (kg, date, user_id) VALUES (?,?,?)', [weight, date, id])
+        if weight <= 0 || weight > 635
+            session[:local] = true
             redirect '/weight'
         else
-            redirect '/login'
+            session[:local] = false
+            if session[:user]
+                db = SQLite3::Database.open('db/db.sqlite')
+                date = Time.now.strftime("%Y-%m-%d %H:%M")
+                id = session[:user]
+
+                db.execute('INSERT INTO weights (kg, date, user_id) VALUES (?,?,?)', [weight, date, id])
+                redirect '/weight'
+            else
+                redirect '/login'
+            end
         end
     end
 end
