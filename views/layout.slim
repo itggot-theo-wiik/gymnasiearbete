@@ -29,7 +29,8 @@ html
 			/! <h3>Joe Danger</h3
 			- if session[:user]
 				p.white
-					= @user.email
+					/ = @user.email
+					p.white Inloggad (mail)
 			- else
 				a href="/login"
 					p.white Logga in
@@ -40,7 +41,7 @@ html
 				.profile_icon2
 				  /! <img src="./img/joe_danger_profile.png" class="profile_icon2" id="nav_icon" /
 				.nav_header2
-					p Namn Namnsson
+					p.black87 Joe Danger
 					p.black87 joe.danger@gmail.com
 			a href="/" 
 			  li.nav_list_48px

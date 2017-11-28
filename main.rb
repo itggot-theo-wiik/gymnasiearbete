@@ -65,13 +65,13 @@ class Main < Sinatra::Base
         day7 = params['day7']
 
         # Check if the username already exist, and the mail
-        varr = db.execute('SELECT username FROM users WHERE username IS ?', username)
+        # varr = db.execute('SELECT username FROM users WHERE username IS ?', username)
 
-        p "-----------------------"
-        p varr
-        p "-----------------------"
+        # p "-----------------------"
+        # p varr
+        # p "-----------------------"
 
-        # db.execute('INSERT INTO users (username, email, first_name, last_name, password, points) VALUES (?,?,?,?,?,?)', [username, mail, fname, lname, password, 0])
+        db.execute('INSERT INTO users (username, email, first_name, last_name, password, points) VALUES (?,?,?,?,?,?)', [username, mail, fname, lname, password, 0])
 
         redirect :'/my-profile'
     end
