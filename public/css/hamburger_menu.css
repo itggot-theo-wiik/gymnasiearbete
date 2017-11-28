@@ -1,5 +1,6 @@
 /*---NAVIGATION---*/
 
+
 nav {
     position: fixed;
     position: absolute;
@@ -157,5 +158,12 @@ nav {
         display: flex;
         flex-direction: row;
         align-items: center;
+        padding-bottom: 16px;
+        padding-top: 16px;
     }
+    .nav_header2 {
+        display: flex;
+        flex-direction: column;
+    }
+
 }
