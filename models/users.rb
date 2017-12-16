@@ -23,4 +23,16 @@ class Users
         return Users.new(user)
     end
 
+    def self.create(username, mail, fname, lname, password, session)
+        db = SQLite3::Database.open('db/db.sqlite')
+        db.execute('INSERT INTO users (username, email, first_name, last_name, password, points) VALUES (?,?,?,?,?,?)', [username, mail, fname, lname, password, 0])
+        session[:user_id] = get_id_from_username(username)
+    end
+
+    def self.get_id_from_username(username)
+        db = SQLite3::Database.open('db/db.sqlite')
+        id = db.execute('SELECT id FROM users WHERE username IS ?', username).first.first.to_i
+        return id
+    end
+
 end

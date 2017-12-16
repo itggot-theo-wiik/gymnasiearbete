@@ -27,7 +27,7 @@ html
 			img.profile_icon src="/img/joe_danger_profile.png" /
 		  .nav_header_text
 			/! <h3>Joe Danger</h3
-			- if session[:user]
+			- if session[:user_id]
 				p.white
 					/ = @user.email
 					p.white Inloggad (mail)
@@ -36,13 +36,16 @@ html
 					p.white Logga in
 		.nav_list
 		  ul
-			a href="index.html" 
+			a href="/my-profile" 
 			  li.nav_header1
 				.profile_icon2
 				  /! <img src="./img/joe_danger_profile.png" class="profile_icon2" id="nav_icon" /
 				.nav_header2
-					p.black87 Joe Danger
-					p.black87 joe.danger@gmail.com
+					- if session[:user_id]
+						p.black87 Joe Danger
+						p.black87 joe.danger@gmail.com
+					- else
+						p.black87 Logga in
 			a href="/" 
 			  li.nav_list_48px
 				i#nav_icon.material-icons home

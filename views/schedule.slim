@@ -1,13 +1,17 @@
-h1.header Mitt schema
+h1.header.margin_bottom_16px Mitt schema
 
-.schedule.light_gray_background
-    - 7.times do
+.schedule
+    - weekdays = ["Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag","Söndag"]
+    - @schedule.each_with_index do |x, i|
         .schedule_day.margin_bottom_16px
             table
                 tr
-                    th
-                        h2.header.white87 Måndag
+                    th.left
+                        h2.header.black87
+                            = weekdays[i]
                 tr
-                    td.white Table item
-                tr
-                    td.white Table item
+                    - if x == []
+                        td.black87.margin_left_16px Inget  
+                    - else
+                        td.black87.margin_left_16px
+                            = x.name

@@ -32,7 +32,9 @@ main {
     padding-top: 56px;
 }
 
-.schedule {}
+.schedule {
+
+}
 
 
 /* Button */
@@ -44,6 +46,10 @@ button {
 
 .margin_bottom_16px {
     margin-bottom: 16px;
+}
+
+.margin_left_16px {
+    margin-left: 16px;
 }
 
 
@@ -300,4 +306,11 @@ header {
 
 .eller {
     font-size: 1.2em;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
