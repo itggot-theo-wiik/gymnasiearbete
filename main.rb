@@ -25,6 +25,7 @@ class Main < Sinatra::Base
         if password_decrypted == password
             id = db.execute('SELECT id FROM users WHERE username IS ?', username).first.first
             session[:user_id] = id
+            session[:username] = username
             redirect '/my-profile'
         else
             redirect '/login'
@@ -80,9 +81,6 @@ class Main < Sinatra::Base
     get '/schedule' do
         if session[:user_id]
             @schedule = Schedule.get(session[:user_id])
-            p "--------------------"
-            p @schedule
-            p "--------------------"
             slim :schedule
         else
             redirect '/login'

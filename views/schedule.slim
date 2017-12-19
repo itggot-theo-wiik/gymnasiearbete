@@ -11,7 +11,19 @@ h1.header.margin_bottom_16px Mitt schema
                             = weekdays[i]
                 tr
                     - if x == []
-                        td.black87.margin_left_16px Inget  
+                        td.black87.margin_left_16px
+                            i.material-icons close
                     - else
                         td.black87.margin_left_16px
-                            = x.name
+                            / = x.name
+                            - puts "-----xtreme----"
+                            - puts x
+                            - puts "-----xtreme----"
+                            - x.each do |z|
+                                .row
+                                    p
+                                        = z[1]
+                                        | - 
+                                    p
+                                        = z[2]
+                            - p x
