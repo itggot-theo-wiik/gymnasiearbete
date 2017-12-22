@@ -13,16 +13,21 @@ class Schedule
         db = SQLite3::Database.open('db/db.sqlite')
         schedule = []
         7.times do |day|
-
             # ---------------------------
             id_for_exercices = db.execute('SELECT excercice_id FROM schedules WHERE user_id IS ? AND day IS ?', [user_id, (day + 1)])
             dayly = []
             id_for_exercices.each do |x|
                 dayly << db.execute('SELECT * FROM excercices WHERE id IS ?', x.first).first
             end
+
+            # custom_excercices = db.execute('SELECT * FROM custom_excercices WHERE user_id IS ? AND day IS ?', [user_id, day])
+            # custom_excercices.each do |x|
+            #     dayly << 
+            # end
+
+            # dayly << db.execute('SELECT * FROM custom_excercices WHERE user_id IS ? AND day IS ?', [user_id, day])
             schedule << dayly
             # ----------------------------
-
             # schedule << db.execute('SELECT * FROM excercices WHERE id IN (SELECT excercice_id FROM schedules WHERE user_id IS ? AND day IS ?)', [user_id, (day + 1)])
         end
 
@@ -36,6 +41,11 @@ class Schedule
         # end
 
         return schedule
+    end
+
+    def self.add_custom(day, excercice_name, user_id)
+        db = SQLite3::Database.open('db/db.sqlite')
+        db.execute('INSERT INTO custom_excercices (name, user_id, day) VALUES (?,?,?)', [excercice_name, user_id, day])
     end
 
     def self.create(day1,day2,day3,day4,day5,day6,day7,strictness,goals,user_id)

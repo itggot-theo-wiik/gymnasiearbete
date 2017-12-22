@@ -148,4 +148,12 @@ class Main < Sinatra::Base
             end
         end
     end
+
+    post '/add-excercice' do
+        day = params['day']
+        excercice_name = params['new_excercice']
+        user_id = session[:user_id].to_i
+        Schedule.add_custom(day, excercice_name, user_id)
+        redirect '/schedule'
+    end
 end

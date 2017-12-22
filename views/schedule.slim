@@ -15,10 +15,6 @@ h1.header.margin_bottom_16px Mitt schema
                             i.material-icons close
                     - else
                         td.black87.margin_left_16px
-                            / = x.name
-                            - puts "-----xtreme----"
-                            - puts x
-                            - puts "-----xtreme----"
                             - x.each do |z|
                                 .row
                                     p
@@ -27,3 +23,10 @@ h1.header.margin_bottom_16px Mitt schema
                                     p
                                         = z[2]
                             - p x
+
+            form.mt_32px action="/add-excercice" method="post"
+                input type="hidden" value="#{i}" name="day"
+
+                label for="new_excercice" Lägg till ny träning:
+                input type="text" name="new_excercice" placeholder="Tränings namn"
+                button type="submit" Lägg till
