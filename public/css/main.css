@@ -322,3 +322,11 @@ header {
     justify-content: flex-start;
     align-items: flex-start;
 }
+
+@media (min-width: 900px) {
+    main {
+        width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}

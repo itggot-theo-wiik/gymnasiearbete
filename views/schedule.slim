@@ -18,11 +18,13 @@ h1.header.margin_bottom_16px Mitt schema
                             - x.each do |z|
                                 .row
                                     p
-                                        = z[1]
-                                        | - 
+                                        / = z[1]
+                                        = z.name
+                                        / | - 
                                     p
-                                        = z[2]
-                            - p x
+                                        / = z[2]
+                                        / | Här är poängen
+                            / - p x
 
             form.mt_32px action="/add-excercice" method="post"
                 input type="hidden" value="#{i}" name="day"

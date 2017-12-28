@@ -17,20 +17,11 @@ class Main < Sinatra::Base
     post '/login' do
         username = params['login_username']
         password = params['login_password']
-
-        db = SQLite3::Database.open('db/db.sqlite')
-        password_encrypted = db.execute('SELECT password FROM users WHERE username IS ?', username).first.first
-        password_decrypted = BCrypt::Password.new(password_encrypted)
-
-        if password_decrypted == password
-            id = db.execute('SELECT id FROM users WHERE username IS ?', username).first.first
-            session[:user_id] = id
-            session[:username] = username
+        if Users.authenticate(username, password, session)
             redirect '/my-profile'
         else
             redirect '/login'
         end
-
     end
 
     get '/my-profile' do
@@ -121,6 +112,8 @@ class Main < Sinatra::Base
             end
 
             @color = ["#64ffda", "#9effff"]
+
+            # Weight.percentage_of_goal_reached
             
             slim :weight
         else

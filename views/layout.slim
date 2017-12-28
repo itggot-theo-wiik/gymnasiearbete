@@ -32,11 +32,10 @@ html
 		  .nav_header_img
 			img.profile_icon src="/img/joe_danger_profile.png" /
 		  .nav_header_text
-			/! <h3>Joe Danger</h3
 			- if session[:user_id]
 				p.white
-					/ = @user.email
-					p.white Inloggad (mail)
+					a href="/my-profile"
+					  = session[:email]
 			- else
 				a href="/login"
 					p.white Logga in
@@ -48,8 +47,11 @@ html
 				  /! <img src="./img/joe_danger_profile.png" class="profile_icon2" id="nav_icon" /
 				.nav_header2
 					- if session[:user_id]
-						p.black87 Joe Danger
-						p.black87 joe.danger@gmail.com
+						/ p.black87 Joe Danger
+						p.black87
+						  = session[:username]
+						p.black87
+						  = session[:email]
 					- else
 						p.black87 Logga in
 			a href="/" 
@@ -72,6 +74,11 @@ html
 			  li.nav_list_48px
 				i#nav_icon.material-icons help
 				p.black87text_opacity_87 Om oss
+			- if session[:user_id]
+			  a href="/log-out" 
+			    li.nav_list_48px
+				  i#nav_icon.material-icons clear
+				  p.black87text_opacity_87 Logga ut
 	  .nav_leave onclick=("toggle_shadow(); toggle_leave()") 
 	/! NAV END
 	

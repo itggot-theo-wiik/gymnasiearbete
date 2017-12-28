@@ -23,11 +23,37 @@ class Users
         return Users.new(user)
     end
 
+    def self.authenticate(username, password, session)
+        db = SQLite3::Database.open('db/db.sqlite')
+
+        # Does the username exist?
+        if db.execute('SELECT * FROM users WHERE username IS ?', username) == []
+            session[:failed_logon] = "Det finns ingen sådan kombination!"
+            return false
+        else
+            password_encrypted = db.execute('SELECT password FROM users WHERE username IS ?', username).first.first
+            password_decrypted = BCrypt::Password.new(password_encrypted)
+    
+            if password_decrypted == password
+                id = db.execute('SELECT id FROM users WHERE username IS ?', username).first.first
+                session[:user_id] = id
+                session[:username] = username
+                session[:email] = db.execute('SELECT email FROM users WHERE id IS ?', id).first.first
+                session[:failed_logon] = false
+                return true
+            else
+                session[:failed_logon] = "Det finns ingen sådan kombination!"
+                return false
+            end
+        end
+    end
+
     def self.create(username, mail, fname, lname, password, session)
         db = SQLite3::Database.open('db/db.sqlite')
         db.execute('INSERT INTO users (username, email, first_name, last_name, password, points) VALUES (?,?,?,?,?,?)', [username, mail, fname, lname, password, 0])
         session[:user_id] = get_id_from_username(username)
         session[:username] = username
+        session[:email] = mail
     end
 
     def self.get_id_from_username(username)

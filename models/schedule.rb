@@ -5,8 +5,8 @@ class Schedule
     def initialize(day)
         @id = day[0]
         @name = day[1]
-        @day = day[2]
-        @excercice_id = day[3]
+        # @day = day[2]
+        # @goal = day[3]
     end
 
     def self.get(user_id)
@@ -20,13 +20,27 @@ class Schedule
                 dayly << db.execute('SELECT * FROM excercices WHERE id IS ?', x.first).first
             end
 
-            # custom_excercices = db.execute('SELECT * FROM custom_excercices WHERE user_id IS ? AND day IS ?', [user_id, day])
-            # custom_excercices.each do |x|
-            #     dayly << 
-            # end
+            custom_excercices = db.execute('SELECT * FROM custom_excercices WHERE user_id IS ? AND day IS ?', [user_id, day])
+            custom_excercices.each do |x|
+                dayly << x
+            end
+
+            # Create classes of each excercice START
+
+            version_two = []
+
+            dayly.each do |excercice|
+                version_two << Schedule.new(excercice)
+            end
+
+            # Create classes of each excercice END
 
             # dayly << db.execute('SELECT * FROM custom_excercices WHERE user_id IS ? AND day IS ?', [user_id, day])
-            schedule << dayly
+
+            # Fungerar som är under
+            # schedule << dayly
+
+            schedule << version_two
             # ----------------------------
             # schedule << db.execute('SELECT * FROM excercices WHERE id IN (SELECT excercice_id FROM schedules WHERE user_id IS ? AND day IS ?)', [user_id, (day + 1)])
         end
