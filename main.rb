@@ -3,8 +3,8 @@ class Main < Sinatra::Base
     enable :sessions
 
     get '/' do
-        if session[:user]
-            @user = Users.one(session[:user].to_i)
+        if session[:user_id]
+            @user = Users.one(session[:user_id].to_i)
         end
 
         slim :home
@@ -17,24 +17,16 @@ class Main < Sinatra::Base
     post '/login' do
         username = params['login_username']
         password = params['login_password']
-
-        db = SQLite3::Database.open('db/db.sqlite')
-        password_encrypted = db.execute('SELECT password FROM users WHERE username IS ?', username).first.first
-        password_decrypted = BCrypt::Password.new(password_encrypted)
-
-        if password_decrypted == password
-            id = db.execute('SELECT id FROM users WHERE username IS ?', username).first.first
-            session[:user] = id
+        if Users.authenticate(username, password, session)
             redirect '/my-profile'
         else
             redirect '/login'
         end
-
     end
 
     get '/my-profile' do
-        if session[:user]
-            id = session[:user]
+        if session[:user_id]
+            id = session[:user_id]
             @user = Users.one(id)
             slim :'my-profile'
         else
@@ -65,19 +57,25 @@ class Main < Sinatra::Base
         day7 = params['day7']
 
         # Check if the username already exist, and the mail
-        varr = db.execute('SELECT username FROM users WHERE username IS ?', username)
+        # varr = db.execute('SELECT username FROM users WHERE username IS ?', username)
 
-        p "-----------------------"
-        p varr
-        p "-----------------------"
+        # Create a new profile
+        Users.create(username, mail, fname, lname, password, session)
 
-        # db.execute('INSERT INTO users (username, email, first_name, last_name, password, points) VALUES (?,?,?,?,?,?)', [username, mail, fname, lname, password, 0])
+        # Create custom schedual
+        user_id = Users.get_id_from_username(username)
+        Schedule.create(day1,day2,day3,day4,day5,day6,day7,strictness.to_i,goals.to_i,user_id)
 
         redirect :'/my-profile'
     end
 
     get '/schedule' do
-        slim :schedule
+        if session[:user_id]
+            @schedule = Schedule.get(session[:user_id])
+            slim :schedule
+        else
+            redirect '/login'
+        end
     end
 
     get '/users' do
@@ -97,9 +95,9 @@ class Main < Sinatra::Base
     end
 
     get '/weight' do
-        if session[:user]
+        if session[:user_id]
             db = SQLite3::Database.open('db/db.sqlite')
-            id = session[:user]
+            id = session[:user_id]
             x = db.execute('SELECT date FROM weights WHERE user_id IS ?', id)
             y = db.execute('SELECT kg FROM weights WHERE user_id IS ?', id)
 
@@ -114,6 +112,8 @@ class Main < Sinatra::Base
             end
 
             @color = ["#64ffda", "#9effff"]
+
+            # Weight.percentage_of_goal_reached
             
             slim :weight
         else
@@ -129,10 +129,10 @@ class Main < Sinatra::Base
             redirect '/weight'
         else
             session[:local] = false
-            if session[:user]
+            if session[:user_id]
                 db = SQLite3::Database.open('db/db.sqlite')
                 date = Time.now.strftime("%Y-%m-%d %H:%M")
-                id = session[:user]
+                id = session[:user_id]
 
                 db.execute('INSERT INTO weights (kg, date, user_id) VALUES (?,?,?)', [weight, date, id])
                 redirect '/weight'
@@ -140,5 +140,13 @@ class Main < Sinatra::Base
                 redirect '/login'
             end
         end
+    end
+
+    post '/add-excercice' do
+        day = params['day']
+        excercice_name = params['new_excercice']
+        user_id = session[:user_id].to_i
+        Schedule.add_custom(day, excercice_name, user_id)
+        redirect '/schedule'
     end
 end

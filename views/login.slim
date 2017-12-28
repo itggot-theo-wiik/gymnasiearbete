@@ -6,6 +6,10 @@
         .question
             input.login_box type="password" name="login_password" placeholder="Lösenord"
 
+        - if session[:failed_logon]
+            h4.header
+                = session[:failed_logon]
+
         button.login_button type="submit" Log in
 
 

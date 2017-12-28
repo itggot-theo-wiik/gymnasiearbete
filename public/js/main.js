@@ -15,7 +15,6 @@ function dontRun() {
     };
 
     drawGraph(x, y, color)
-
 }
 
 function rand() {
@@ -24,7 +23,6 @@ function rand() {
 
 // Show the graph
 function drawGraph(x, y, color) {
-
     const CHART = document.getElementById('lineChart');
     let lineChart = new Chart(CHART, {
         type: 'line',
@@ -39,6 +37,32 @@ function drawGraph(x, y, color) {
         }
     });
 };
+
+// function doughnutChart() {
+//     data = {
+//         datasets: [{
+//             data: [3, 21]
+//         }],
+
+//         labels: [
+//             'KG kvar',
+//             'KG förlorat'
+//         ]
+//     };
+
+//     const PIE = document.getElementById('pieChart');
+//     var myDoughnutChart = new Chart(PIE, {
+//         type: 'doughnut',
+//         data: data,
+//         datasets: [{
+//             backgroundColor: [
+//                 '#ff6384',
+//                 '#ff6384',
+//             ]
+//         }],
+//         // options: options
+//     });
+// };
 
 // Toggla skuggan
 function toggle_shadow() {

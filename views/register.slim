@@ -1,4 +1,4 @@
-h1.header.login_text Skapa ett nytt konto
+h1.header.login_text.mt_16px Skapa ett nytt konto
 
 form.margin_bottom_16px action="/register" method="post"
   .column
@@ -8,7 +8,7 @@ form.margin_bottom_16px action="/register" method="post"
       input name="fname" type="text" /
 
     .question
-      label for="lname"  Efternamn:
+	  label for="lname"  Efternamn:
       input name="lname" type="text" /
 
     .question
@@ -34,13 +34,13 @@ form.margin_bottom_16px action="/register" method="post"
 
     .question.center
       fieldset.removeBorder name="strictness"
-        legend Hur strikt skall schemat vara?
+        legend Hur hårt skall ditt schema vara?
         input#radio name="strictness" type="radio" value="1" /
-        label for="radio1"  Lite
+        label for="radio1"  Lätt
         input#radio name="strictness" type="radio" value="2" /
         label for="radio2"  Medel
         input#radio name="strictness" type="radio" value="3" /
-        label for="radio3"  Mycket
+        label for="radio3"  Ansträngande
 
     fieldset
       legend Choose your interests

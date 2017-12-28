@@ -1,11 +1,11 @@
-h1.header Vikthistorik
+h1.header.mt_16px Vikthistorik
 
 - if @kg_arr.first
     h3.header Din historik
 - else
     h3.header Du har inte loggat någon vikt, gör det nu!
 
-canvas#lineChart height="300" width="400"
+canvas#lineChart height="300" width="300"
 
 - if session[:local]
     h3.header Måste vara mer än 0
@@ -19,20 +19,15 @@ form action="/weight" method="post"
 
     button type="submit" Lägg till
 
+h1.header.mt_16px Vikthistorik
+h3.header 
+    | Du har nått
+    | x
+    | % av ditt vikt mål!
+
+.meme onload="superF()"
 
 / script
-/     | function drawGraph() {
-/     | const CHART = document.getElementById('lineChart');
-/     | let lineChart = new Chart(CHART, {
-/     | type: 'line',
-/     | data: {
-/     | labels: | [1,2,3,4,5],
-/     | datasets: [{
-/     | label: "Kilogram",
-/     | borderColor: "#D7ECFD",
-/     | backgroundColor: "#008080",
-/     | data: | [1,2,3,4,5],
-/     | }],
-/     | }
-/     | });
-/     | }
+/     function pop() {
+/         console.log("damn");
+/     };
