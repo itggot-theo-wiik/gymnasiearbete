@@ -95,4 +95,14 @@ $(document).ready(function () {
 
 function superF() {
     console.log("Ping Pong CHING chong!")
-}
+};
+
+function show(id) {
+    element = document.getElementById(id);
+    element.classList.toggle("display_confirmation");
+};
+
+function hide(id) {
+    element = document.getElementById(id);
+    element.remove();
+};

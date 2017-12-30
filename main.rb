@@ -4,6 +4,7 @@ class Main < Sinatra::Base
 
     get '/' do
         if session[:user_id]
+            @quote = Quote.random()
             @user = Users.one(session[:user_id].to_i)
         end
 
@@ -18,7 +19,7 @@ class Main < Sinatra::Base
         username = params['login_username']
         password = params['login_password']
         if Users.authenticate(username, password, session)
-            redirect '/my-profile'
+            redirect '/'
         else
             redirect '/login'
         end
@@ -71,19 +72,26 @@ class Main < Sinatra::Base
 
     get '/schedule' do
         if session[:user_id]
-            @schedule = Schedule.get(session[:user_id])
+            # @schedule = Schedule.get(session[:user_id])
+            @schedule = Schedule.get2(session[:user_id])
             slim :schedule
         else
             redirect '/login'
         end
     end
 
-    get '/users' do
+    post '/schedule/done' do
+        id = params['id']
+        Schedule.check(id, session)
+        redirect '/schedule'
+    end
+
+    get '/user' do
         @users = Users.all
         slim :list
     end
 
-    get '/users/:id' do
+    get '/user/:id' do
         id = params['id'].to_i
         @user = Users.one(id)
         slim :show
@@ -113,7 +121,7 @@ class Main < Sinatra::Base
 
             @color = ["#64ffda", "#9effff"]
 
-            # Weight.percentage_of_goal_reached
+            @percentage_reached = Weight.percentage_of_goal_reached(session[:user_id], session)
             
             slim :weight
         else
@@ -149,4 +157,9 @@ class Main < Sinatra::Base
         Schedule.add_custom(day, excercice_name, user_id)
         redirect '/schedule'
     end
+
+    get '/about' do
+        slim :about
+    end
+
 end

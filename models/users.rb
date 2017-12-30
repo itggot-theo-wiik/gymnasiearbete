@@ -8,7 +8,7 @@ class Users
         @first_name = user[3]
         @last_name = user[4]
         @password = user[5]
-        @points = user[6]
+        @points = Users.points(id)
     end
 
     def self.all
@@ -21,6 +21,17 @@ class Users
         db = SQLite3::Database.open('db/db.sqlite')
         user = db.execute('SELECT * FROM users WHERE id IS ?', id).first
         return Users.new(user)
+    end
+
+    def self.points(id)
+        db = SQLite3::Database.open('db/db.sqlite')
+        points = 0
+        completed_excercices = db.execute('SELECT excercice_id FROM weekly_schedules WHERE user_id IS ? AND done = ?', [id, "true"])
+
+        completed_excercices.each do |x|
+            points += db.execute('SELECT difficulty FROM excercices WHERE id IS ?', x.first).first.first.to_i
+        end
+        return points
     end
 
     def self.authenticate(username, password, session)

@@ -1,10 +1,41 @@
-.container1
-    .healthy_picture
-    .wall_off_text
-        h2.welcome.header Välkommen till Healthy!
-        p.black87 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-    .links
-        a.green_link1 href="/login" logga in
-        p.eller eller
-        a.green_link2 href="/register" registrera dig
+- unless session[:user_id]
+    .container1
+        .healthy_picture
+        .wall_off_text
+            h2.welcome.header Välkommen till Healthy!
+            p.black87 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        .links
+            a.green_link1 href="/login" Logga in
+            p.eller eller
+            a.green_link2 href="/register" registrera dig
+- else
+    h1.header.mt_16px Välkommen till Healthy 👋👋👋
 
+    .cards.mt_16px
+        a.mb_16px href="/schedule"
+            .card.card-2
+                h1.header Ditt schema! 🏋
+                .card_content
+                    .row
+                        p Ta en titt på vad du har för träningar att göra! Lägg gärna till flera själv! Klicka på mig för att ta dig dit!
+                    i.material-icons.big-icon date_range
+            
+                .custom_box
+
+        a.mb_16px href="/#"
+            .card.card-2
+                h1.header
+            
+                .custom_box#quote_box
+                    h3.header
+                        = @quote
+                
+        a.mb_16px href="/weight"
+            .card.card-2
+                h1.header Din vikthistorik!
+                .card_content
+                    .row
+                        p Logga din vikt, se din framgång! Klicka på mig!
+                    i.material-icons.big-icon trending_down
+            
+                .custom_box

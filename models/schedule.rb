@@ -1,65 +1,136 @@
 class Schedule
 
-    attr_reader :id, :name, :day, :excercice
+    attr_reader :id, :excercice_id, :name, :done
 
-    def initialize(day)
-        @id = day[0]
-        @name = day[1]
-        # @day = day[2]
-        # @goal = day[3]
+    def initialize(excercice)
+        @id = excercice[2]
+        @excercice_id = excercice[0][0]
+        @name = excercice[0][1]
+        @done = excercice[1]
     end
 
-    def self.get(user_id)
+    # def self.get(user_id)
+    #     db = SQLite3::Database.open('db/db.sqlite')
+    #     schedule = []
+    #     7.times do |day|
+    #         # ---------------------------
+    #         id_for_exercices = db.execute('SELECT excercice_id FROM schedules WHERE user_id IS ? AND day IS ?', [user_id, (day + 1)])
+    #         dayly = []
+    #         id_for_exercices.each do |x|
+    #             dayly << db.execute('SELECT * FROM excercices WHERE id IS ?', x.first).first
+    #         end
+
+    #         custom_excercices = db.execute('SELECT * FROM custom_excercices WHERE user_id IS ? AND day IS ?', [user_id, day])
+    #         custom_excercices.each do |x|
+    #             dayly << x
+    #         end
+
+    #         version_two = []
+
+    #         dayly.each do |excercice|
+    #             version_two << Schedule.new(excercice)
+    #         end
+
+    #         schedule << version_two
+    #     end
+
+    #     return schedule
+    # end
+
+    def self.get2(user_id)
         db = SQLite3::Database.open('db/db.sqlite')
-        schedule = []
-        7.times do |day|
-            # ---------------------------
-            id_for_exercices = db.execute('SELECT excercice_id FROM schedules WHERE user_id IS ? AND day IS ?', [user_id, (day + 1)])
-            dayly = []
-            id_for_exercices.each do |x|
-                dayly << db.execute('SELECT * FROM excercices WHERE id IS ?', x.first).first
+        weekly_schedule = db.execute('SELECT * FROM weekly_schedules WHERE user_id IS ?', user_id)
+        year = Time.now.strftime('%Y')
+        week = Time.now.strftime('%W')
+
+        if weekly_schedule == nil || weekly_schedule == [] || year.to_i != weekly_schedule.last[4].to_i || week.to_i != weekly_schedule.last[5].to_i
+            # No weekly schedule for this user
+            # Or it's outdated
+            # Creates one
+
+            original_schedule = db.execute('SELECT * FROM schedules WHERE user_id IS ?', user_id)
+
+            original_schedule.each do |excercice|
+                db.execute('INSERT INTO weekly_schedules (user_id, excercice_id, done, year, week, day, active) VALUES (?,?,?,?,?,?,?)', [user_id, excercice[3], "false", year, week, excercice[2], "true"])
             end
+        else
+            # Return the schedule
 
-            custom_excercices = db.execute('SELECT * FROM custom_excercices WHERE user_id IS ? AND day IS ?', [user_id, day])
-            custom_excercices.each do |x|
-                dayly << x
+            schedule = []
+            7.times do |day|
+                excercices = db.execute('SELECT * FROM weekly_schedules WHERE user_id IS ? AND day IS ?', [user_id, (day + 1)])
+                # id_for_exercices = db.execute('SELECT excercice_id FROM weekly_schedules WHERE user_id IS ? AND day IS ?', [user_id, (day + 1)])
+
+                dayly = []
+                excercices.each do |x|
+                    dayly << [db.execute('SELECT * FROM excercices WHERE id IS ?', x[2]).first, db.execute('SELECT done FROM weekly_schedules WHERE id IS ?', x[0]).first.first, x.first]
+                end
+
+                temp = []
+                dayly.each do |excercice|
+                    temp << Schedule.new(excercice)
+                end
+
+                schedule << temp
             end
-
-            # Create classes of each excercice START
-
-            version_two = []
-
-            dayly.each do |excercice|
-                version_two << Schedule.new(excercice)
-            end
-
-            # Create classes of each excercice END
-
-            # dayly << db.execute('SELECT * FROM custom_excercices WHERE user_id IS ? AND day IS ?', [user_id, day])
-
-            # Fungerar som är under
-            # schedule << dayly
-
-            schedule << version_two
-            # ----------------------------
-            # schedule << db.execute('SELECT * FROM excercices WHERE id IN (SELECT excercice_id FROM schedules WHERE user_id IS ? AND day IS ?)', [user_id, (day + 1)])
+            
+            return schedule
         end
-
-        # output = []
-        # schedule.each do |x|
-        #     if x == []
-        #         # nothing
-        #     else
-        #         output << self.new(x)
-        #     end
-        # end
-
-        return schedule
     end
 
     def self.add_custom(day, excercice_name, user_id)
         db = SQLite3::Database.open('db/db.sqlite')
         db.execute('INSERT INTO custom_excercices (name, user_id, day) VALUES (?,?,?)', [excercice_name, user_id, day])
+    end
+
+    def self.check(id, session)
+        db = SQLite3::Database.open('db/db.sqlite')
+        year = Time.now.strftime('%Y')
+        week = Time.now.strftime('%W')
+        day = Time.now.strftime('%A')
+
+        weekdays = {
+            "Monday" => 1,
+            "Tuesday" => 2,
+            "Wednesday" => 3,
+            "Thursday" => 4,
+            "Friday" => 5,
+            "Saturday" => 6,
+            "Sunday" => 7
+        }
+
+        excercice = db.execute('SELECT * FROM weekly_schedules WHERE user_id IS ? AND id IS ?', [session[:user_id], id]).first
+
+        if excercice[4].to_i == year.to_i && excercice[5].to_i == week.to_i && excercice[6].to_i == weekdays["#{day}"].to_i
+            db.execute('UPDATE weekly_schedules SET done = ? WHERE id IS ?', ["true", id])
+            session[:check_error] = false
+            return true
+        else
+            # weekdays = {
+            #     "Monday" => "Måndag",
+            #     "Tuesday" => "Tisdag",
+            #     "Wednesday" => "Onsdag",
+            #     "Thursday" => "Torsdag",
+            #     "Friday" => "Fredag",
+            #     "Saturday" => "Lördag",
+            #     "Sunday" => "Söndag"
+            # }
+            # day = weekdays["#{day}"]
+
+            weekdays = {
+                1 => "Måndag",
+                2 => "Tisdag",
+                3 => "Onsdag",
+                4 => "Torsdag",
+                5 => "Fredag",
+                6 => "Lördag",
+                7 => "Söndag"
+            }
+
+            day = weekdays[excercice[6].to_i]
+            session[:check_error] = "Det är inte #{day} idag! Bra försök 😉"
+            return false
+        end
     end
 
     def self.create(day1,day2,day3,day4,day5,day6,day7,strictness,goals,user_id)

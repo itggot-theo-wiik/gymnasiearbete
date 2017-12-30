@@ -9,25 +9,27 @@ canvas#lineChart height="300" width="300"
 
 - if session[:local]
     h3.header Måste vara mer än 0
+- if session[:error_no_goal]
+    h3.header Du har inte valt något mål! Gör det!
+- if session[:error_no_logged_weight]
+    h3.header Du har inte loggat någon vikt! Gör det!
 
 .hello onClick="drawGraph(#{@date_arr}, #{@kg_arr}, #{@color})"
-/ .divvv onload="drawGraph()"
 
 form action="/weight" method="post"
     label for="new_weight"
     input type="text" name="new_weight"
-
     button type="submit" Lägg till
 
-h1.header.mt_16px Vikthistorik
+h1.header.mt_16px Din framgång
 h3.header 
     | Du har nått
-    | x
-    | % av ditt vikt mål!
+    = @percentage_reached
+    | av ditt vikt mål!
 
 .meme onload="superF()"
 
-/ script
-/     function pop() {
-/         console.log("damn");
-/     };
+javascript:
+    $(document).ready(function() {
+        drawGraph(#{@date_arr}, #{@kg_arr}, #{@color});
+    });
