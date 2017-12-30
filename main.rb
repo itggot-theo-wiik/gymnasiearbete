@@ -162,4 +162,8 @@ class Main < Sinatra::Base
         slim :about
     end
 
+    get '/run' do
+        slim :run
+    end
+
 end
