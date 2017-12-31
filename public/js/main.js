@@ -123,3 +123,10 @@ function showPosition(position) {
     x.innerHTML = "Latitude: " + position.coords.latitude +
         "<br>Longitude: " + position.coords.longitude;
 }
+
+function isNumberKey(evt) {
+    var charCode = (evt.which) ? evt.which : event.keyCode
+    if (charCode > 31 && (charCode != 46 &&(charCode < 48 || charCode > 57)))
+        return false;
+    return true;
+}

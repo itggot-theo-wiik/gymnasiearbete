@@ -6,12 +6,16 @@ class Weight
         current_weight = db.execute('SELECT kg FROM weights WHERE user_id IS ?', user_id)[-1]
         initial_weight = db.execute('SELECT kg FROM weights WHERE user_id IS ?', user_id)
 
-        if goal.first.first == nil
+        p current_weight
+        p initial_weight
+        p goal
+
+        if goal == nil
             session[:error_no_logged_weight] = true
             return false
         end
 
-        if current_weight.first == nil
+        if current_weight == nil
             session[:error_no_goal] = true
             return false
         end

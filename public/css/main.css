@@ -31,6 +31,12 @@ button {
     flex-direction: row;
 }
 
+.row_center {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
 .card-2 {
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
@@ -99,6 +105,22 @@ a {
     margin-top: 32px;
 }
 
+.ml_4px {
+    margin-left: 4px;
+}
+
+.ml_8px {
+    margin-left: 8px;
+}
+
+.ml_16px {
+    margin-left: 16px;
+}
+
+.ml_32px {
+    margin-left: 32px;
+}
+
 .mb_8px {
     margin-bottom: 8px;
 }
@@ -109,6 +131,14 @@ a {
 
 .mb_32px {
     margin-bottom: 32px;
+}
+
+.pt_16px {
+    padding-top: 16px;
+}
+
+.pl_16px {
+    padding-left: 16px;
 }
 
 
@@ -223,6 +253,11 @@ header a {
     margin: 16px;
     display: flex;
     flex-direction: column;
+}
+
+.multi_box {
+    max-width: 250px;
+    border: none;
 }
 
 .center {
@@ -366,7 +401,7 @@ header {
 
 .confirm_excercice {
     background-color: white;
-    height: 200px;
+    min-height: 200px;
     width: 200px;
     z-index: 200;
     border-radius: 8px;
@@ -420,10 +455,15 @@ header {
 
 .custom_box {
     width: 100%;
+    width: auto;
+    border-radius: 2px;
     min-height: 100px;
     background-color: rgba(0, 0, 0, 0.16);
 }
 
+.small_help {
+    font-size: 12px !important;
+}
 
 /* Boxes */
 

@@ -6,6 +6,7 @@ class Main < Sinatra::Base
         if session[:user_id]
             @quote = Quote.random()
             @user = Users.one(session[:user_id].to_i)
+            @schedule = Schedule.get2(session[:user_id])
         end
 
         slim :home
@@ -36,6 +37,7 @@ class Main < Sinatra::Base
     end
 
     get '/register' do
+        @goals = Schedule.get_goals()
         slim :register
     end
 
@@ -56,18 +58,18 @@ class Main < Sinatra::Base
         day5 = params['day5']
         day6 = params['day6']
         day7 = params['day7']
-
-        # Check if the username already exist, and the mail
-        # varr = db.execute('SELECT username FROM users WHERE username IS ?', username)
+        weight_goal = params['weight_goal'].to_f
 
         # Create a new profile
-        Users.create(username, mail, fname, lname, password, session)
+        if Users.create(username, mail, fname, lname, password, session, weight_goal)
+            # Create custom schedual
+            user_id = Users.get_id_from_username(username)
+            Schedule.create(day1,day2,day3,day4,day5,day6,day7,strictness.to_i,goals.to_i,user_id)
 
-        # Create custom schedual
-        user_id = Users.get_id_from_username(username)
-        Schedule.create(day1,day2,day3,day4,day5,day6,day7,strictness.to_i,goals.to_i,user_id)
-
-        redirect :'/my-profile'
+            redirect '/my-profile'
+        else
+            redirect '/register'
+        end
     end
 
     get '/schedule' do
@@ -82,6 +84,8 @@ class Main < Sinatra::Base
 
     post '/schedule/done' do
         id = params['id']
+        feedback = params['feedback']
+        puts feedback
         Schedule.check(id, session)
         redirect '/schedule'
     end
@@ -166,4 +170,7 @@ class Main < Sinatra::Base
         slim :run
     end
 
+    get '/learn/sets_and_reps' do
+        slim :'learn/sets_and_reps'
+    end
 end

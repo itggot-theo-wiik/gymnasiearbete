@@ -1,12 +1,25 @@
 class Schedule
 
-    attr_reader :id, :excercice_id, :name, :done
+    attr_reader :id, :excercice_id, :name, :done, :excercice_type, :amount
 
     def initialize(excercice)
         @id = excercice[2]
         @excercice_id = excercice[0][0]
         @name = excercice[0][1]
         @done = excercice[1]
+        @excercice_type = excercice[3]
+
+        if @excercice_type == "sets_n_reps"
+            db = SQLite3::Database.open('db/db.sqlite')
+            @amount = db.execute('SELECT sets, reps FROM users WHERE id IS ?', excercice[4]).first
+        elsif @excercice_type == "time"
+            # @amount = 
+        elsif @excercice_type == "distance"
+            # @amount = 
+        end
+
+        p @amount
+
     end
 
     # def self.get(user_id)
@@ -53,29 +66,42 @@ class Schedule
             original_schedule.each do |excercice|
                 db.execute('INSERT INTO weekly_schedules (user_id, excercice_id, done, year, week, day, active) VALUES (?,?,?,?,?,?,?)', [user_id, excercice[3], "false", year, week, excercice[2], "true"])
             end
-        else
-            # Return the schedule
-
-            schedule = []
-            7.times do |day|
-                excercices = db.execute('SELECT * FROM weekly_schedules WHERE user_id IS ? AND day IS ?', [user_id, (day + 1)])
-                # id_for_exercices = db.execute('SELECT excercice_id FROM weekly_schedules WHERE user_id IS ? AND day IS ?', [user_id, (day + 1)])
-
-                dayly = []
-                excercices.each do |x|
-                    dayly << [db.execute('SELECT * FROM excercices WHERE id IS ?', x[2]).first, db.execute('SELECT done FROM weekly_schedules WHERE id IS ?', x[0]).first.first, x.first]
-                end
-
-                temp = []
-                dayly.each do |excercice|
-                    temp << Schedule.new(excercice)
-                end
-
-                schedule << temp
-            end
-            
-            return schedule
         end
+
+        # Return the schedule
+        schedule = []
+        7.times do |day|
+            excercices = db.execute('SELECT * FROM weekly_schedules WHERE user_id IS ? AND day IS ?', [user_id, (day + 1)])
+            # id_for_exercices = db.execute('SELECT excercice_id FROM weekly_schedules WHERE user_id IS ? AND day IS ?', [user_id, (day + 1)])
+
+            dayly = []
+            excercices.each do |x|
+                dayly << [db.execute('SELECT * FROM excercices WHERE id IS ?', x[2]).first, db.execute('SELECT done FROM weekly_schedules WHERE id IS ?', x[0]).first.first, x.first, db.execute('SELECT type FROM excercice_type WHERE id IS (SELECT excercice_type FROM excercices WHERE id IS ?)', x[2]).first.first, user_id]
+            end
+
+            temp = []
+            dayly.each do |excercice|
+                temp << Schedule.new(excercice)
+            end
+
+            schedule << temp
+        end
+        
+        return schedule
+    end
+
+    def self.day_in_integer()
+        day = Time.now.strftime('%A')
+        weekdays = {
+            "Monday" => 1,
+            "Tuesday" => 2,
+            "Wednesday" => 3,
+            "Thursday" => 4,
+            "Friday" => 5,
+            "Saturday" => 6,
+            "Sunday" => 7
+        }
+        return weekdays[day].to_i
     end
 
     def self.add_custom(day, excercice_name, user_id)
@@ -131,6 +157,16 @@ class Schedule
             session[:check_error] = "Det är inte #{day} idag! Bra försök 😉"
             return false
         end
+    end
+    
+    def self.get_goals()
+        db = SQLite3::Database.open('db/db.sqlite')
+        goals = db.execute('SELECT * FROM goals')
+        output = []
+        goals.each do |goal|
+            output << [goal[0].to_i, goal[1]]
+        end
+        return output
     end
 
     def self.create(day1,day2,day3,day4,day5,day6,day7,strictness,goals,user_id)

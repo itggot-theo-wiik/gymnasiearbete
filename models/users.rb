@@ -59,12 +59,22 @@ class Users
         end
     end
 
-    def self.create(username, mail, fname, lname, password, session)
+    def self.create(username, mail, fname, lname, password, session, weight_goal)
         db = SQLite3::Database.open('db/db.sqlite')
-        db.execute('INSERT INTO users (username, email, first_name, last_name, password, points) VALUES (?,?,?,?,?,?)', [username, mail, fname, lname, password, 0])
-        session[:user_id] = get_id_from_username(username)
-        session[:username] = username
-        session[:email] = mail
+
+        # Check if the username already exist, and the mail
+        existing_name = db.execute('SELECT * FROM users WHERE username IS ?', username)
+        existing_email = db.execute('SELECT * FROM users WHERE email IS ?', mail)
+        
+        if existing_name == [] && existing_email == []
+            db.execute('INSERT INTO users (username, email, first_name, last_name, password, points, weight_goal) VALUES (?,?,?,?,?,?,?)', [username, mail, fname, lname, password, 0, weight_goal])
+            session[:user_id] = get_id_from_username(username)
+            session[:username] = username
+            session[:email] = mail
+            return true
+        else
+            return false
+        end        
     end
 
     def self.get_id_from_username(username)
