@@ -71,7 +71,7 @@ class Schedule
         # Return the schedule
         schedule = []
         7.times do |day|
-            excercices = db.execute('SELECT * FROM weekly_schedules WHERE user_id IS ? AND day IS ?', [user_id, (day + 1)])
+            excercices = db.execute('SELECT * FROM weekly_schedules WHERE user_id IS ? AND day IS ? AND year IS ? AND week IS ?', [user_id, (day + 1), year, week])
             # id_for_exercices = db.execute('SELECT excercice_id FROM weekly_schedules WHERE user_id IS ? AND day IS ?', [user_id, (day + 1)])
 
             dayly = []
