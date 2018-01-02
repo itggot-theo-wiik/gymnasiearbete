@@ -4,23 +4,23 @@ form.margin_bottom_16px action="/register" method="post"
   .column
     .question
       label for="fname"  Förnamn:
-      input name="fname" type="text" /
+      input.login_box name="fname" type="text" placeholder="Förnamn"
 
     .question
 	  label for="lname"  Efternamn:
-      input name="lname" type="text" /
+      input.login_box name="lname" type="text" placeholder="Efternamn"
 
     .question
       label for="username_account"  Användarnamn:
-      input name="username_account" type="text" /
+      input.login_box name="username_account" type="text" placeholder="Användarnamn"
 
     .question
-      label for="mail"  Mail:
-      input name="mail" type="text" /
+      label for="mail"  Email:
+      input.login_box name="mail" type="text" placeholder="Email"
 
     .question
       label for="password"  Lösenord:
-      input name="password" type="password" /
+      input.login_box name="password" type="password" placeholder="Lösenord"
 
     .question
       label for="goals"  Vad har du för mål med din träning?:
@@ -78,6 +78,15 @@ form.margin_bottom_16px action="/register" method="post"
       .question
         label for="weight_goal"  Har du något viktmål? (i KG):
         input name="weight_goal" type="text" placeholder="KG" onkeypress="return isNumberKey(event)"
+
+    .question
+      label for="distance" Om du brukar springa tidigare, hur långt brukar du springa?
+      select name="distance"
+        option value="false" Jag brukar inte springa, börja lätt!
+        option value="0.5" 0.5 km
+        option value="1" 1 km
+        option value="1.5" 1.5 km
+        option value="2" 2 km
 
     button type="submit"  Ok
 

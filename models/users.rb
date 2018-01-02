@@ -59,7 +59,7 @@ class Users
         end
     end
 
-    def self.create(username, mail, fname, lname, password, session, weight_goal)
+    def self.create(username, mail, fname, lname, password, session, weight_goal, distance, goal)
         db = SQLite3::Database.open('db/db.sqlite')
 
         # Check if the username already exist, and the mail
@@ -67,7 +67,11 @@ class Users
         existing_email = db.execute('SELECT * FROM users WHERE email IS ?', mail)
         
         if existing_name == [] && existing_email == []
-            db.execute('INSERT INTO users (username, email, first_name, last_name, password, points, weight_goal) VALUES (?,?,?,?,?,?,?)', [username, mail, fname, lname, password, 0, weight_goal])
+            if distance == "false"
+                distance = 0.5
+            end
+            sets_and_reps = db.execute('SELECT sets, reps FROM goals WHERE id IS ?', goal).first
+            db.execute('INSERT INTO users (username, email, first_name, last_name, password, points, weight_goal, distance, sets, reps) VALUES (?,?,?,?,?,?,?,?,?,?)', [username, mail, fname, lname, password, 0, weight_goal, distance.to_f, sets_and_reps[0], sets_and_reps[1]])
             session[:user_id] = get_id_from_username(username)
             session[:username] = username
             session[:email] = mail

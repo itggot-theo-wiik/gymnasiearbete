@@ -217,6 +217,30 @@ a {
     background-color: #14cba8;
 }
 
+.bg_secondary {
+    background-color: #40ff80;
+}
+
+.bg_secondary_light {
+    background-color: #83ffb1;
+}
+
+.bg_secondary_dark {
+    background-color: #00ca51;
+}
+
+.text_secondary {
+    color: #40ff80;
+}
+
+.text_secondary_light {
+    color: #83ffb1;
+}
+
+.text_secondary_dark {
+    color: #00ca51;
+}
+
 
 /* GRAPHS */
 
@@ -288,6 +312,9 @@ header {
     background-color: #37474f;
     color: white;
     font-size: 1.2em;
+    border-radius: 8px;
+    border: none;
+    padding-left: 8px;
 }
 
 ::-webkit-input-placeholder {
@@ -464,6 +491,7 @@ header {
 .small_help {
     font-size: 12px !important;
 }
+
 
 /* Boxes */
 

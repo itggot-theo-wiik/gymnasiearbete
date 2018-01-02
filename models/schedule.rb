@@ -109,7 +109,7 @@ class Schedule
         db.execute('INSERT INTO custom_excercices (name, user_id, day) VALUES (?,?,?)', [excercice_name, user_id, day])
     end
 
-    def self.check(id, session)
+    def self.check(id, session, feedback)
         db = SQLite3::Database.open('db/db.sqlite')
         year = Time.now.strftime('%Y')
         week = Time.now.strftime('%W')
@@ -128,21 +128,16 @@ class Schedule
         excercice = db.execute('SELECT * FROM weekly_schedules WHERE user_id IS ? AND id IS ?', [session[:user_id], id]).first
 
         if excercice[4].to_i == year.to_i && excercice[5].to_i == week.to_i && excercice[6].to_i == weekdays["#{day}"].to_i
-            db.execute('UPDATE weekly_schedules SET done = ? WHERE id IS ?', ["true", id])
+            if feedback
+                feedback = feedback.to_i
+            else
+                feedback = 2
+            end
+
+            db.execute('UPDATE weekly_schedules SET done = ?, feedback = ? WHERE id IS ?', ["true", feedback.to_i, id])
             session[:check_error] = false
             return true
         else
-            # weekdays = {
-            #     "Monday" => "Måndag",
-            #     "Tuesday" => "Tisdag",
-            #     "Wednesday" => "Onsdag",
-            #     "Thursday" => "Torsdag",
-            #     "Friday" => "Fredag",
-            #     "Saturday" => "Lördag",
-            #     "Sunday" => "Söndag"
-            # }
-            # day = weekdays["#{day}"]
-
             weekdays = {
                 1 => "Måndag",
                 2 => "Tisdag",
@@ -225,6 +220,23 @@ class Schedule
                 end
             end
         end
+    end
+
+    def self.calc_sets_and_reps(user_id)
+        db = SQLite3::Database.open('db/db.sqlite')
+        feedback = db.execute('SELECT feedback FROM weekly_schedules WHERE feedback_active IS ? AND user_id IS ?', ["true", user_id])
+        sets_and_reps = db.execute('SELECT sets, reps FROM users WHERE user_id IS ?', user_id).first
+        feedback.each do |x|
+            if x
+
+            end
+        end
+    end
+
+    def self.calc_distance(user_id)
+        db = SQLite3::Database.open('db/db.sqlite')
+        feedback = db.execute('SELECT feedback FROM weekly_schedules WHERE feedback_active IS ? AND user_id IS ? AND excercice_id IN (SELECT id FROM excercices WHERE excercice_type IS (SELECT id FROM excercice_type WHERE type IS ?))', ["true", user_id, "distance"])
+        p feedback
     end
 
 end

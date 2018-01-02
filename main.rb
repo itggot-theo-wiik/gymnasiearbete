@@ -59,9 +59,10 @@ class Main < Sinatra::Base
         day6 = params['day6']
         day7 = params['day7']
         weight_goal = params['weight_goal'].to_f
+        distance = params['distance']
 
         # Create a new profile
-        if Users.create(username, mail, fname, lname, password, session, weight_goal)
+        if Users.create(username, mail, fname, lname, password, session, weight_goal, distance, goals.to_i)
             # Create custom schedual
             user_id = Users.get_id_from_username(username)
             Schedule.create(day1,day2,day3,day4,day5,day6,day7,strictness.to_i,goals.to_i,user_id)
@@ -76,6 +77,7 @@ class Main < Sinatra::Base
         if session[:user_id]
             # @schedule = Schedule.get(session[:user_id])
             @schedule = Schedule.get2(session[:user_id])
+            Schedule.calc_distance(session[:user_id].to_i)
             slim :schedule
         else
             redirect '/login'
@@ -86,7 +88,7 @@ class Main < Sinatra::Base
         id = params['id']
         feedback = params['feedback']
         puts feedback
-        Schedule.check(id, session)
+        Schedule.check(id, session, feedback)
         redirect '/schedule'
     end
 
@@ -170,7 +172,19 @@ class Main < Sinatra::Base
         slim :run
     end
 
+    get '/learn' do
+        slim :'learn/learn'
+    end
+
     get '/learn/sets_and_reps' do
         slim :'learn/sets_and_reps'
+    end
+
+    get '/excercices' do
+        if session[:admin]
+            slim :'admin/excercices'
+        else
+            redirect '/'
+        end 
     end
 end
