@@ -1,0 +1,81 @@
+.session_container.bg_secondary_dark
+    a href="/schedule"
+        i.material-icons.mb_16px close
+    h1.header Nu tränar vi! 💪
+    h3.header I denna session skall
+    h3.header du göra det följande:
+    .todo_box.bg_secondary_light.mt_16px
+
+        - day = (Schedule.day_in_integer() - 1)
+        - @schedule.each_with_index do |x, i|
+
+            - if i == day
+                - if x == []
+                    h4.header Du är redan färdig för idag. Men om du känner att du har mycket energi kvar skulle vi rekommendera att du gör detta! 😌
+                    - @no_exercices = true
+
+                - else
+                    -x.each do |z|
+                        .row
+                                p
+                                    i.material-icons label_outline
+                                p
+                                    = z.name
+
+    - unless @no_exercices
+        .start_session_container.mt_32px    
+            button.bg_secondary_light onclick="session_show(1)"
+                h1.header Kör igång!
+
+    - @schedule.each_with_index do |x, day_i|
+        - if day_i == day
+            - if x == []
+                / Do nothing
+            - else
+                -x.each_with_index do |z, i|
+                    - p i
+                    .excercice.bg_secondary_dark id="#{i+1}"
+                        h1.mt_16px.ml_16px.header
+                            = i + 1
+                            | #
+                            |  
+                            = z.name
+
+                        .excercice_image.mt_32px.bg_secondary_light
+                            h1.header Image
+
+                        .reps_and_sets
+                            .row
+                                .column
+                                    h1.header Sets
+                                    h1
+                                        = z.amount[0]
+
+                                .column
+                                    h1.header Reps
+                                    h1
+                                        = z.amount[1]
+
+                        .excercice_nav
+                            - if (i + 2) > x.size
+                                .row
+                                    i.material-icons.mr_8px arrow_back
+                                    p Tillbaka
+
+                                a href="/schedule"
+                                    .row
+                                        form action="/excercice-session" method="post"
+                                            / Returns a list of the excercices which has been completed
+                                            - array = []
+                                            - x.each_with_index do |id|
+                                                - array << id.id
+                                            input type="hidden" value="#{array.join(",")}" name="excercices"
+                                            button type="submit"Färdig! 🙌
+                            - else 
+                                .row
+                                    i.material-icons.mr_8px arrow_back
+                                    p Tillbaka
+
+                                .row onclick="session_show(#{i + 2})"
+                                    p.mr_8px Nästa!
+                                    i.material-icons arrow_forward

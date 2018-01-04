@@ -40,6 +40,18 @@ h1.header.margin_bottom_16px Mitt schema
                                                 i.material-icons.black87.small_help.ml_4px help 
 
                                     - elsif z.excercice_type == "time"
+                                        .row_center
+                                            p.ml_32px
+                                                | Denna kräver tid att utföras
+
+                                    - elsif z.excercice_type == "distance"
+                                        .row_center
+                                            p.ml_32px
+                                                = z.amount
+                                                |  km
+                                    
+                                    a.dark_blue href="/excercice-session" Starta tränings session!
+                                    
 
 
 
@@ -81,3 +93,6 @@ h1.header.margin_bottom_16px Mitt schema
                             input type="radio" name="feedback" value="3" För svårt
 
                     button.mt_16px type="submit" Done
+
+
+a#hello href="bla"

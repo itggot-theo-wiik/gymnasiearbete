@@ -102,6 +102,11 @@ function show(id) {
     element.classList.toggle("display_confirmation");
 };
 
+function session_show(id) {
+    element = document.getElementById(id);
+    element.classList.toggle("show");
+};
+
 function hide(id) {
     element = document.getElementById(id);
     element.remove();

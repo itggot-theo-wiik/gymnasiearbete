@@ -62,11 +62,10 @@ class Main < Sinatra::Base
         distance = params['distance']
 
         # Create a new profile
-        if Users.create(username, mail, fname, lname, password, session, weight_goal, distance, goals.to_i)
+        if Users.create(username, mail, fname, lname, password, session, weight_goal, distance, goals.to_i, day1, day2, day3, day4, day5, day6, day7, strictness)
             # Create custom schedual
             user_id = Users.get_id_from_username(username)
             Schedule.create(day1,day2,day3,day4,day5,day6,day7,strictness.to_i,goals.to_i,user_id)
-
             redirect '/my-profile'
         else
             redirect '/register'
@@ -77,7 +76,6 @@ class Main < Sinatra::Base
         if session[:user_id]
             # @schedule = Schedule.get(session[:user_id])
             @schedule = Schedule.get2(session[:user_id])
-            Schedule.calc_distance(session[:user_id].to_i)
             slim :schedule
         else
             redirect '/login'
@@ -93,14 +91,18 @@ class Main < Sinatra::Base
     end
 
     get '/user' do
-        @users = Users.all
-        slim :list
+        if session[:admin]
+            @users = Users.all
+            slim :list
+        else
+            redirect '/'
+        end
     end
 
     get '/user/:id' do
         id = params['id'].to_i
         @user = Users.one(id)
-        slim :show
+        slim :user
     end
 
     get '/log-out' do
@@ -180,7 +182,32 @@ class Main < Sinatra::Base
         slim :'learn/sets_and_reps'
     end
 
-    get '/excercices' do
+    get '/excercice-session' do
+        if session[:user_id]
+            @schedule = Schedule.get2(session[:user_id], true)
+            slim :session
+        else
+            redirect '/'
+        end
+    end
+
+    post '/excercice-session' do
+        exercices_id = params['excercices'].split(",")
+        exercices_id.each do |x|
+            Schedule.check(x.to_i, session)
+        end
+        redirect '/schedule'
+    end
+
+    get '/admin' do
+        if session[:admin]
+            slim :'admin/admin'
+        else
+            redirect '/'
+        end
+    end
+
+    get '/admin/excercices' do
         if session[:admin]
             slim :'admin/excercices'
         else

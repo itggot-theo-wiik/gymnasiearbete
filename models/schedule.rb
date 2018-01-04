@@ -4,9 +4,12 @@ class Schedule
 
     def initialize(excercice)
         @id = excercice[2]
+        @user_id = excercice[4]
         @excercice_id = excercice[0][0]
         @name = excercice[0][1]
         @done = excercice[1]
+        p done
+        p "---------------------"
         @excercice_type = excercice[3]
 
         if @excercice_type == "sets_n_reps"
@@ -15,10 +18,10 @@ class Schedule
         elsif @excercice_type == "time"
             # @amount = 
         elsif @excercice_type == "distance"
-            # @amount = 
+            @amount = Schedule.calc_distance(@user_id.to_i)
         end
 
-        p @amount
+        # p @amount
 
     end
 
@@ -50,7 +53,7 @@ class Schedule
     #     return schedule
     # end
 
-    def self.get2(user_id)
+    def self.get2(user_id, non_completed_only = false)
         db = SQLite3::Database.open('db/db.sqlite')
         weekly_schedule = db.execute('SELECT * FROM weekly_schedules WHERE user_id IS ?', user_id)
         year = Time.now.strftime('%Y')
@@ -71,11 +74,17 @@ class Schedule
         # Return the schedule
         schedule = []
         7.times do |day|
-            excercices = db.execute('SELECT * FROM weekly_schedules WHERE user_id IS ? AND day IS ? AND year IS ? AND week IS ?', [user_id, (day + 1), year, week])
-            # id_for_exercices = db.execute('SELECT excercice_id FROM weekly_schedules WHERE user_id IS ? AND day IS ?', [user_id, (day + 1)])
+            if non_completed_only
+                # Only un-completed excercices
+                excercices = db.execute('SELECT * FROM weekly_schedules WHERE user_id IS ? AND day IS ? AND year IS ? AND week IS ? AND done IS ?', [user_id, (day + 1), year, week, "false"])
+            else
+                excercices = db.execute('SELECT * FROM weekly_schedules WHERE user_id IS ? AND day IS ? AND year IS ? AND week IS ?', [user_id, (day + 1), year, week])
+            end
+            
 
             dayly = []
             excercices.each do |x|
+                # [names of the excercices, bla, bla, type of excercice, user id]
                 dayly << [db.execute('SELECT * FROM excercices WHERE id IS ?', x[2]).first, db.execute('SELECT done FROM weekly_schedules WHERE id IS ?', x[0]).first.first, x.first, db.execute('SELECT type FROM excercice_type WHERE id IS (SELECT excercice_type FROM excercices WHERE id IS ?)', x[2]).first.first, user_id]
             end
 
@@ -109,7 +118,7 @@ class Schedule
         db.execute('INSERT INTO custom_excercices (name, user_id, day) VALUES (?,?,?)', [excercice_name, user_id, day])
     end
 
-    def self.check(id, session, feedback)
+    def self.check(id, session, feedback = nil)
         db = SQLite3::Database.open('db/db.sqlite')
         year = Time.now.strftime('%Y')
         week = Time.now.strftime('%W')
@@ -236,7 +245,17 @@ class Schedule
     def self.calc_distance(user_id)
         db = SQLite3::Database.open('db/db.sqlite')
         feedback = db.execute('SELECT feedback FROM weekly_schedules WHERE feedback_active IS ? AND user_id IS ? AND excercice_id IN (SELECT id FROM excercices WHERE excercice_type IS (SELECT id FROM excercice_type WHERE type IS ?))', ["true", user_id, "distance"])
-        p feedback
+        distance = 5
+        feedback.each do |x|
+            if x.first == 1
+                # Too easy
+                distance += 0.15
+            elsif x.first == 3
+                # To hard
+                distance -= 0.15
+            end  
+        end
+        return distance
     end
 
 end

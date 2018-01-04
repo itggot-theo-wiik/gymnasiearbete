@@ -125,6 +125,10 @@ a {
     margin-bottom: 8px;
 }
 
+.mr_8px {
+    margin-right: 8px;
+}
+
 .mb_16px {
     margin-bottom: 16px;
 }
@@ -505,6 +509,67 @@ header {
 
 #quote_box h1 {
     font-family: 'Leckerli One', cursive;
+}
+
+/* SESSION */
+
+.session_container {
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+}
+
+.todo_box {
+    width: calc(100vw - 48px);
+    min-height: 140px;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.start_session_container {
+    height: 100px;
+    width: calc(100vw - 48px);
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.start_session_container button {
+    height: 50px;
+}
+
+.excercice {
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    position: fixed;
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
+.excercice_image {
+    height: 200px;
+    width: calc(100vw - 48px);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.excercice_nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    bottom: 16px;
+    position: absolute;
+    width: 100vw;
 }
 
 @media (min-width: 900px) {
