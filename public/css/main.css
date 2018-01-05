@@ -381,6 +381,14 @@ header {
     background-size: cover;
 }
 
+.the_rock_img {
+    height: 300px;
+    width: 100%;
+    background-image: url(../img/the_rock.jpg);
+    background-size: cover;
+    background-position: center;
+}
+
 .wall_off_text {
     margin: 16px;
 }
