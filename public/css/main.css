@@ -382,9 +382,9 @@ header {
 }
 
 .the_rock_img {
-    height: 300px;
+    height: 200px;
     width: 100%;
-    background-image: url(../img/the_rock.jpg);
+    background-image: url(http://www.sportsandsafetysurfaces.co.uk/wp-content/uploads/2015/01/vv-1.jpg);
     background-size: cover;
     background-position: center;
 }
