@@ -1,0 +1,58 @@
+.schedule
+    - weekdays = ["Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag","Söndag"]
+    - @schedule.each_with_index do |x, i|
+        .schedule_day.margin_bottom_16px
+            table
+                tr
+                    th.left
+                        h2.header.black87
+                            = weekdays[i]
+                tr
+                    - if x == []
+                        td.black87.margin_left_16px
+                            i.material-icons brightness_low
+                    - else
+                        td.black87.margin_left_16px
+                            - x.each do |z|
+                                .column.mb_16px
+                                    .row_center onclick="show(#{z.id})"
+                                        p
+                                            - if z.done == "true"
+                                                i.material-icons check_box
+                                            - else
+                                                i.material-icons check_box_outline_blank
+                                        p
+                                            / = z[1]
+                                            = z.name
+                                            / | - 
+                                    - if z.excercice_type == "sets_n_reps"
+                                        .row_center
+                                            p.ml_32px
+                                                | 
+                                                |  Sets:
+                                                = " #{z.amount[0]}, "
+                                                |  Reps:
+                                                = " #{z.amount[1]}"
+
+                                            a href="/sets_and_reps"
+                                                i.material-icons.black87.small_help.ml_4px help 
+
+                                    - elsif z.excercice_type == "time"
+                                        .row_center
+                                            p.ml_32px
+                                                | Denna kräver tid att utföras
+
+                                    - elsif z.excercice_type == "distance"
+                                        .row_center
+                                            p.ml_32px
+                                                = z.amount
+                                                |  km
+                                    
+                                    a.dark_blue href="/excercice-session" Starta tränings session!
+                                    
+            form.mt_32px action="/add-excercice" method="post"
+                input type="hidden" value="#{i}" name="day"
+
+                label for="new_excercice" Lägg till ny träning:
+                input type="text" name="new_excercice" placeholder="Tränings namn"
+                button type="submit" Lägg till

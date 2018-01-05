@@ -1,67 +1,5 @@
 h1.header.margin_bottom_16px Mitt schema
 
-.schedule
-    - weekdays = ["Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag","Söndag"]
-    - @schedule.each_with_index do |x, i|
-        .schedule_day.margin_bottom_16px
-            table
-                tr
-                    th.left
-                        h2.header.black87
-                            = weekdays[i]
-                tr
-                    - if x == []
-                        td.black87.margin_left_16px
-                            i.material-icons brightness_low
-                    - else
-                        td.black87.margin_left_16px
-                            - x.each do |z|
-                                .column.mb_16px
-                                    .row_center onclick="show(#{z.id})"
-                                        p
-                                            - if z.done == "true"
-                                                i.material-icons check_box
-                                            - else
-                                                i.material-icons check_box_outline_blank
-                                        p
-                                            / = z[1]
-                                            = z.name
-                                            / | - 
-                                    - if z.excercice_type == "sets_n_reps"
-                                        .row_center
-                                            p.ml_32px
-                                                | 
-                                                |  Sets:
-                                                = " #{z.amount[0]}, "
-                                                |  Reps:
-                                                = " #{z.amount[1]}"
-
-                                            a href="/sets_and_reps"
-                                                i.material-icons.black87.small_help.ml_4px help 
-
-                                    - elsif z.excercice_type == "time"
-                                        .row_center
-                                            p.ml_32px
-                                                | Denna kräver tid att utföras
-
-                                    - elsif z.excercice_type == "distance"
-                                        .row_center
-                                            p.ml_32px
-                                                = z.amount
-                                                |  km
-                                    
-                                    a.dark_blue href="/excercice-session" Starta tränings session!
-                                    
-
-
-
-            form.mt_32px action="/add-excercice" method="post"
-                input type="hidden" value="#{i}" name="day"
-
-                label for="new_excercice" Lägg till ny träning:
-                input type="text" name="new_excercice" placeholder="Tränings namn"
-                button type="submit" Lägg till
-
 - if session[:check_error]
     .confirm_excercice_container#check_error
             .confirm_excercice.card-4
@@ -96,3 +34,56 @@ h1.header.margin_bottom_16px Mitt schema
 
 
 a#hello href="bla"
+
+.schedule
+    - weekdays = ["Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag","Söndag"]
+    - colors = ["bg_secondary_light", "bg_secondary"]
+    - @schedule.each_with_index do |x, i|
+        h2.header.black87.mb_16px
+            = weekdays[i]
+        .schedule_day.margin_bottom_16px
+            - if x == []
+                p Ingen träning denna dag
+            - else
+                table.tg cellspacing="0" cellpadding="0"
+                    tr.bg_secondary_dark
+                        th.tg-yw41
+                            | Färdig
+                        th.tg-yw41
+                            | Träning
+                        th.tg-yw41
+                            | Sets
+                        th.tg-yw41
+                            | Reps
+                        th.tg-yw41
+                            | Tid
+                        th.tg-yw41
+                            | Distans
+                
+                    - x.each_with_index do |z, color_index|
+
+                        - if color_index.even?
+                            - color = colors[0]
+                        - else
+                            - color = colors[1]
+
+                        tr class="#{color}" onclick="show(#{z.id})"
+                                td.tg-yw41.column_center
+                                    - if z.done == "true"
+                                        i.material-icons check_box
+                                    - else
+                                        i.material-icons check_box_outline_blank
+                                td.tg-yw41
+                                    = z.name
+                                td.tg-yw41
+                                    - if z.excercice_type == "sets_n_reps"
+                                        = z.amount[0]
+                                td.tg-yw41
+                                    - if z.excercice_type == "sets_n_reps"
+                                        = z.amount[1]
+                                td.tg-yw41
+                                    - if z.excercice_type == "time"
+                                td.tg-yw41
+                                    - if z.excercice_type == "distance"
+                                        = z.amount
+                                        |  km

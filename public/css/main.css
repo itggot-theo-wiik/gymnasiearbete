@@ -37,6 +37,12 @@ button {
     align-items: center;
 }
 
+.column_center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .card-2 {
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
@@ -519,6 +525,7 @@ header {
     font-family: 'Leckerli One', cursive;
 }
 
+
 /* SESSION */
 
 .session_container {
@@ -580,6 +587,35 @@ header {
     width: 100vw;
 }
 
+.tg {
+    border-collapse: collapse;
+    border-spacing: 0;
+    min-width: calc(100vw - 32px);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tg td {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    padding: 10px 5px;
+    overflow: hidden;
+    word-break: normal;
+}
+
+.tg th {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    /* font-weight: normal; */
+    padding: 10px 5px;
+    overflow: hidden;
+    word-break: normal;
+}
+
+.tg .tg-yw4l {
+    vertical-align: top
+}
+
 @media (min-width: 900px) {
     main {
         width: 900px;
@@ -595,5 +631,9 @@ header {
     .card {
         width: 500px;
         height: 300px;
+    }
+    .tg {
+        min-width: 0px;
+        width: 900px;
     }
 }
