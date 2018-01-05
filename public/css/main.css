@@ -21,6 +21,30 @@ button {
     max-width: 150px;
 }
 
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.row_center {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.card-2 {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.card-4 {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
 .hello {
     height: 50px;
     width: 50px;
@@ -61,7 +85,7 @@ a {
 
 .header {
     font-weight: 300;
-    margin-left: 16px;
+    /* margin-left: 16px; */
 }
 
 .header_title {
@@ -79,6 +103,46 @@ a {
 
 .mt_32px {
     margin-top: 32px;
+}
+
+.ml_4px {
+    margin-left: 4px;
+}
+
+.ml_8px {
+    margin-left: 8px;
+}
+
+.ml_16px {
+    margin-left: 16px;
+}
+
+.ml_32px {
+    margin-left: 32px;
+}
+
+.mb_8px {
+    margin-bottom: 8px;
+}
+
+.mr_8px {
+    margin-right: 8px;
+}
+
+.mb_16px {
+    margin-bottom: 16px;
+}
+
+.mb_32px {
+    margin-bottom: 32px;
+}
+
+.pt_16px {
+    padding-top: 16px;
+}
+
+.pl_16px {
+    padding-left: 16px;
 }
 
 
@@ -157,6 +221,30 @@ a {
     background-color: #14cba8;
 }
 
+.bg_secondary {
+    background-color: #40ff80;
+}
+
+.bg_secondary_light {
+    background-color: #83ffb1;
+}
+
+.bg_secondary_dark {
+    background-color: #00ca51;
+}
+
+.text_secondary {
+    color: #40ff80;
+}
+
+.text_secondary_light {
+    color: #83ffb1;
+}
+
+.text_secondary_dark {
+    color: #00ca51;
+}
+
 
 /* GRAPHS */
 
@@ -195,6 +283,11 @@ header a {
     flex-direction: column;
 }
 
+.multi_box {
+    max-width: 250px;
+    border: none;
+}
+
 .center {
     margin-left: auto;
     margin-right: auto;
@@ -223,6 +316,9 @@ header {
     background-color: #37474f;
     color: white;
     font-size: 1.2em;
+    border-radius: 8px;
+    border: none;
+    padding-left: 8px;
 }
 
 ::-webkit-input-placeholder {
@@ -323,10 +419,173 @@ header {
     align-items: flex-start;
 }
 
+.confirm_excercice_container {
+    background-color: rgba(0, 0, 0, 0.3);
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+    z-index: 150;
+}
+
+.confirm_excercice {
+    background-color: white;
+    min-height: 200px;
+    width: 200px;
+    z-index: 200;
+    border-radius: 8px;
+    padding: 16px;
+    position: fixed;
+}
+
+.display_confirmation {
+    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#check_error {
+    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hide {
+    display: none;
+}
+
+.cards {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    width: calc(100vw - 32px);
+    min-height: 120px;
+    border-radius: 2px;
+}
+
+.card_content {
+    display: flex;
+    flex-direction: row;
+}
+
+.big-icon {
+    font-size: 96px !important;
+    color: #40ff80 !important;
+}
+
+.custom_box {
+    width: 100%;
+    width: auto;
+    border-radius: 2px;
+    min-height: 100px;
+    background-color: rgba(0, 0, 0, 0.16);
+}
+
+.small_help {
+    font-size: 12px !important;
+}
+
+
+/* Boxes */
+
+#quote_box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+
+#quote_box h1 {
+    font-family: 'Leckerli One', cursive;
+}
+
+/* SESSION */
+
+.session_container {
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+}
+
+.todo_box {
+    width: calc(100vw - 48px);
+    min-height: 140px;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.start_session_container {
+    height: 100px;
+    width: calc(100vw - 48px);
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.start_session_container button {
+    height: 50px;
+}
+
+.excercice {
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    position: fixed;
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
+.excercice_image {
+    height: 200px;
+    width: calc(100vw - 48px);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.excercice_nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    bottom: 16px;
+    position: absolute;
+    width: 100vw;
+}
+
 @media (min-width: 900px) {
     main {
         width: 900px;
         margin-left: auto;
         margin-right: auto;
+    }
+    /* .cards {
+        display: flex;
+        flex-direction: row;
+        width: 900px;
+        height: 5000px;
+    } */
+    .card {
+        width: 500px;
+        height: 300px;
     }
 }

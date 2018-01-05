@@ -2,56 +2,57 @@ h1.header.login_text.mt_16px Skapa ett nytt konto
 
 form.margin_bottom_16px action="/register" method="post"
   .column
-
     .question
       label for="fname"  Förnamn:
-      input name="fname" type="text" /
+      input.login_box name="fname" type="text" placeholder="Förnamn"
 
     .question
 	  label for="lname"  Efternamn:
-      input name="lname" type="text" /
+      input.login_box name="lname" type="text" placeholder="Efternamn"
 
     .question
       label for="username_account"  Användarnamn:
-      input name="username_account" type="text" /
+      input.login_box name="username_account" type="text" placeholder="Användarnamn"
 
     .question
-      label for="mail"  Mail:
-      input name="mail" type="text" /
+      label for="mail"  Email:
+      input.login_box name="mail" type="text" placeholder="Email"
 
     .question
       label for="password"  Lösenord:
-      input name="password" type="password" /
+      input.login_box name="password" type="password" placeholder="Lösenord"
 
     .question
       label for="goals"  Vad har du för mål med din träning?:
       select name="goals"
-		option value="1"  Bygga synliga muskler
-		option value="2"  Förbättra min hälsa
-		option value="3"  Gå ner i vikt
-		option value="4"  Gå upp i vikt
-		option value="5"  Förbättra min kondition
+        - @goals.each do |goal|
+          option value="#{goal.first}"
+            = goal.last
 
-    .question.center
+    .question
       fieldset.removeBorder name="strictness"
         legend Hur hårt skall ditt schema vara?
-        input#radio name="strictness" type="radio" value="1" /
-        label for="radio1"  Lätt
-        input#radio name="strictness" type="radio" value="2" /
-        label for="radio2"  Medel
-        input#radio name="strictness" type="radio" value="3" /
-        label for="radio3"  Ansträngande
+        .column
+          .row
+            input#radio name="strictness" type="radio" value="1" /
+            label for="radio1"  Lätt
+          .row
+            input#radio name="strictness" type="radio" value="2" /
+            label for="radio2"  Medel
+          .row
+            input#radio name="strictness" type="radio" value="3" /
+            label for="radio3"  Ansträngande
 
-    fieldset
-      legend Choose your interests
+    fieldset.multi_box.ml_16px
+      legend Vilka dagar vill du träna på?
 
       div
         input#monday name="day1" type="checkbox" value="1" /
-        label for="monday"  Monday
+        label for="monday"  Måndag
 
       div
         input#tuesday name="day2" type="checkbox" value="2" /
-        label for="tuesday"  Tuesday
+        label for="tuesday"  Tisdag
    
       div
         input#wednesday name="day3" type="checkbox" value="3" /
@@ -72,6 +73,20 @@ form.margin_bottom_16px action="/register" method="post"
       div
         input#sunday name="day7" type="checkbox" value="7" /
         label for="sunday"  Söndag
+
+    .column
+      .question
+        label for="weight_goal"  Har du något viktmål? (i KG):
+        input name="weight_goal" type="text" placeholder="KG" onkeypress="return isNumberKey(event)"
+
+    .question
+      label for="distance" Om du brukar springa tidigare, hur långt brukar du springa?
+      select name="distance"
+        option value="false" Jag brukar inte springa, börja lätt!
+        option value="0.5" 0.5 km
+        option value="1" 1 km
+        option value="1.5" 1.5 km
+        option value="2" 2 km
 
     button type="submit"  Ok
 

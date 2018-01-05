@@ -10,6 +10,8 @@ require_relative 'main.rb'
 #Models
 require_relative 'models/users.rb'
 require_relative 'models/schedule.rb'
+require_relative 'models/weight.rb'
+require_relative 'models/quote.rb'
 
 #Makes SLIM pretty :o \(^ v ^)/
 Slim::Engine.set_options pretty: true, sort_attrs: false

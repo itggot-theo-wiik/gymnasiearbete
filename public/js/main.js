@@ -95,4 +95,43 @@ $(document).ready(function () {
 
 function superF() {
     console.log("Ping Pong CHING chong!")
+};
+
+function show(id) {
+    element = document.getElementById(id);
+    element.classList.toggle("display_confirmation");
+};
+
+function session_show(id) {
+    element = document.getElementById(id);
+    element.classList.toggle("show");
+};
+
+function hide(id) {
+    element = document.getElementById(id);
+    element.remove();
+};
+
+// Run test
+
+var x = document.getElementById("demo");
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(showPosition);
+    } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+
+function showPosition(position) {
+    x.innerHTML = "Latitude: " + position.coords.latitude +
+        "<br>Longitude: " + position.coords.longitude;
+}
+
+function isNumberKey(evt) {
+    var charCode = (evt.which) ? evt.which : event.keyCode
+    if (charCode > 31 && (charCode != 46 &&(charCode < 48 || charCode > 57)))
+        return false;
+    return true;
 }

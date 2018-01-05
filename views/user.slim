@@ -1,0 +1,47 @@
+h1.header.mt_32px Användare
+
+h1.header.mt_32px
+    | Användarnamn:
+    |  
+    = @user.username
+
+h1.header.mt_32px
+    | Denna användare har:
+    |  
+    = @user.points
+    |  poäng.
+
+h1.header.mt_32px Skicka vänförfrågan
+
+form
+    input type="hidden" value="#{@user.id}"
+    button type="submit"
+        | Skicka vänförfrågan till
+        |  
+        = @user.username
+
+- if session[:admin]
+    h1.header Under mig är admin tools 😎
+
+    form
+    input type="hidden" value="#{@user.id}"
+    button type="submit"
+        | Banna denna användare
+        |  
+        = @user.username
+
+    p 
+        | Användarnamn: 
+        = @user.username
+
+    p
+        | Förnamn:
+        = @user.first_name
+
+    p
+        | Efternamn:
+        = @user.last_name
+
+    p
+        | Mail adress:
+        = @user.email

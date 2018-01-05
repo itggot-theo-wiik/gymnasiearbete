@@ -1,10 +1,115 @@
-.container1
-    .healthy_picture
-    .wall_off_text
-        h2.welcome.header Välkommen till Healthy!
-        p.black87 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-    .links
-        a.green_link1 href="/login" logga in
-        p.eller eller
-        a.green_link2 href="/register" registrera dig
+- unless session[:user_id]
+    .container1
+        .healthy_picture
+        .wall_off_text
+            h2.welcome.header Välkommen till Healthy!
+            p.black87 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        .links
+            a.green_link1 href="/login" Logga in
+            p.eller eller
+            a.green_link2 href="/register" registrera dig
+- else
+    h1.header.mt_16px.ml_16px Välkommen till Healthy 👋👋👋
 
+    .cards.mt_16px
+        
+        .card.card-2.mb_16px
+            a href="/schedule"
+                h1.header Ditt schema! 🏋
+                .card_content
+                    .row
+                        p Ta en titt på vad du har för träningar att göra! Lägg gärna till flera själv! Klicka på mig för att ta dig dit!
+                    i.material-icons.big-icon date_range
+            
+            .custom_box#schedule_box.pl_16px.pt_16px
+                h2.header Dagens aktiviteter
+        
+                - day = (Schedule.day_in_integer() - 1)
+                - @schedule.each_with_index do |x, i|
+
+                    - if i == day
+                        - if x == []
+                            h4.header Du har ingenting att göra idag, samla på dig lite energi! 😌
+
+                        - else
+                            -x.each do |z|
+                                - if z.done == "true"
+                                    .row
+                                        p
+                                            - if z.done == "true"
+                                                i.material-icons check_box
+                                            - else
+                                                i.material-icons check_box_outline_blank
+                                        p
+                                            = z.name
+                                - else
+                                    .row onclick="show(#{z.id})"
+                                        p
+                                            - if z.done == "true"
+                                                i.material-icons check_box
+                                            - else
+                                                i.material-icons check_box_outline_blank
+                                        p
+                                            = z.name
+                        
+
+        
+        .card.card-2.mb_16px
+            a href="/#"
+                h1.header
+        
+            .custom_box#quote_box
+                h3.header
+                    = @quote
+                
+        
+        .card.card-2.mb_16px
+            a href="/weight"
+                h1.header Din vikthistorik!
+                .card_content
+                    .row
+                        p Logga din vikt, se din framgång! Här kan du kolla hur långt du har kommit på ditt mål, samt ändra den om du så skulle vela! Klicka på mig!
+                    i.material-icons.big-icon trending_down
+            
+            .custom_box
+
+        .card.card-2.mb_16px
+                    a href="/learn"
+                        h1.header Lär dig om träning!
+                        .card_content
+                            .row
+                                p Så mycket skoj att lära sig! Är det något du undrar? Ta en titt om vi har svaret!
+                            i.material-icons.big-icon book
+                    
+                    .custom_box
+
+    - if session[:check_error]
+        .confirm_excercice_container#check_error
+                .confirm_excercice.card-4
+                    i.material-icons.black87 onclick="hide('check_error')" close
+
+                    h3.header
+                        = session[:check_error]
+                        - session[:check_error] = false
+
+    - day = (Schedule.day_in_integer() - 1)
+    - @schedule.each_with_index do |x, i|
+        - if i == day
+            - x.each do |z|
+                .confirm_excercice_container id="#{z.id}"
+                    .confirm_excercice.card-4
+                        i.material-icons.black87 onclick="show(#{z.id})" close
+                        h2.header Härligt!
+                        h3.header Hur kändes det?
+                        form action="/schedule/done" method="post"
+                            input type="hidden" value="#{z.id}" name="id"
+
+                            .column.mt_16px
+                                .row
+                                    input type="radio" name="feedback" value="1" För enkelt
+                                .row
+                                    input type="radio" name="feedback" value="2" Lagom utmanande
+                                .row
+                                    input type="radio" name="feedback" value="3" För svårt
+
+                            button.mt_16px type="submit" Done

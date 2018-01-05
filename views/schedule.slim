@@ -12,19 +12,48 @@ h1.header.margin_bottom_16px Mitt schema
                 tr
                     - if x == []
                         td.black87.margin_left_16px
-                            i.material-icons close
+                            i.material-icons brightness_low
                     - else
                         td.black87.margin_left_16px
                             - x.each do |z|
-                                .row
-                                    p
-                                        / = z[1]
-                                        = z.name
-                                        / | - 
-                                    p
-                                        / = z[2]
-                                        / | Här är poängen
-                            / - p x
+                                .column.mb_16px
+                                    .row_center onclick="show(#{z.id})"
+                                        p
+                                            - if z.done == "true"
+                                                i.material-icons check_box
+                                            - else
+                                                i.material-icons check_box_outline_blank
+                                        p
+                                            / = z[1]
+                                            = z.name
+                                            / | - 
+                                    - if z.excercice_type == "sets_n_reps"
+                                        .row_center
+                                            p.ml_32px
+                                                | 
+                                                |  Sets:
+                                                = " #{z.amount[0]}, "
+                                                |  Reps:
+                                                = " #{z.amount[1]}"
+
+                                            a href="/sets_and_reps"
+                                                i.material-icons.black87.small_help.ml_4px help 
+
+                                    - elsif z.excercice_type == "time"
+                                        .row_center
+                                            p.ml_32px
+                                                | Denna kräver tid att utföras
+
+                                    - elsif z.excercice_type == "distance"
+                                        .row_center
+                                            p.ml_32px
+                                                = z.amount
+                                                |  km
+                                    
+                                    a.dark_blue href="/excercice-session" Starta tränings session!
+                                    
+
+
 
             form.mt_32px action="/add-excercice" method="post"
                 input type="hidden" value="#{i}" name="day"
@@ -32,3 +61,38 @@ h1.header.margin_bottom_16px Mitt schema
                 label for="new_excercice" Lägg till ny träning:
                 input type="text" name="new_excercice" placeholder="Tränings namn"
                 button type="submit" Lägg till
+
+- if session[:check_error]
+    .confirm_excercice_container#check_error
+            .confirm_excercice.card-4
+                i.material-icons.black87 onclick="hide('check_error')" close
+
+                h3.header
+                    = session[:check_error]
+                    - session[:check_error] = false
+
+- @schedule.each_with_index do |x, i|
+    - x.each do |z|
+        .confirm_excercice_container id="#{z.id}"
+            .confirm_excercice.card-4
+                i.material-icons.black87 onclick="show(#{z.id})" close
+
+                h2.header Härligt!
+                
+                h3.header Hur kändes det?
+
+                form action="/schedule/done" method="post"
+                    input type="hidden" value="#{z.id}" name="id"
+
+                    .column.mt_16px
+                        .row
+                            input type="radio" name="feedback" value="1" För enkelt
+                        .row
+                            input type="radio" name="feedback" value="2" Lagom utmanande
+                        .row
+                            input type="radio" name="feedback" value="3" För svårt
+
+                    button.mt_16px type="submit" Done
+
+
+a#hello href="bla"
