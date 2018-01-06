@@ -14,7 +14,8 @@ canvas#lineChart height="300" width="300"
 - if session[:error_no_logged_weight]
     h3.header Du har inte loggat någon vikt! Gör det!
 
-.hello onload="drawGraph(#{@date_arr}, #{@kg_arr}, #{@color});"
+.hello onclick="drawGraph(#{@date_arr}, #{@kg_arr}, #{@color});"
+.hello onload="extremeFunction()"
 
 form action="/weight" method="post"
     label for="new_weight"
@@ -27,7 +28,19 @@ h3.header
     = @percentage_reached
     | av ditt vikt mål!
 
-javascript:
-    window.onload = function {
-        console.log("test");
-    };
+erb:
+    <p> <%= @kg_arr %> </p>
+    <p> <%= @date_arr %> </p>
+    <p> <%= @color %> </p>
+
+erb:
+    <div class="hello" onload="drawGraph(<%= @date_arr %>, <%= @kg_arr %>, <%= @color %>)"></div>
+
+erb:
+    <script>
+        window.onload = function() {
+            alert("hej");
+        };
+
+        drawGraph(<%= @date_arr %>, <%= @kg_arr %>, <%= @color %>);
+    </script>

@@ -16,5 +16,8 @@ require_relative 'models/quote.rb'
 #Makes SLIM pretty :o \(^ v ^)/
 Slim::Engine.set_options pretty: true, sort_attrs: false
 
+# Use ERB in slim
+Slim::Embedded.options[:erb] = {auto_ids: false}
+
 #Run the app
 run Main

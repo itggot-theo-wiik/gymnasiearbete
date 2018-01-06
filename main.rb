@@ -131,7 +131,8 @@ class Main < Sinatra::Base
 
             @percentage_reached = Weight.percentage_of_goal_reached(session[:user_id], session)
             
-            slim :weight
+            erb :weight
+            # slim :weight
         else
             redirect '/login'
         end

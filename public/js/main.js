@@ -23,7 +23,6 @@ function rand() {
 
 // Show the graph
 function drawGraph(x, y, color) {
-    alert("damn");
     const CHART = document.getElementById('lineChart');
     let lineChart = new Chart(CHART, {
         type: 'line',
@@ -132,3 +131,9 @@ function isNumberKey(evt) {
         return false;
     return true;
 }
+
+function extremeFunction() {
+    console.log("hekk");
+}
+
+extremeFunction()
