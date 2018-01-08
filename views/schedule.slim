@@ -1,4 +1,4 @@
-h1.header.margin_bottom_16px Mitt schema
+h1.header.margin_bottom_16px.mt_16px.ml_16px Mitt schema
 
 - if session[:check_error]
     .confirm_excercice_container#check_error
@@ -39,51 +39,52 @@ a#hello href="bla"
     - weekdays = ["Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag","Söndag"]
     - colors = ["bg_secondary_light", "bg_secondary"]
     - @schedule.each_with_index do |x, i|
-        h2.header.black87.mb_16px
-            = weekdays[i]
-        .schedule_day.margin_bottom_16px
-            - if x == []
-                p Ingen träning denna dag
-            - else
-                table.tg cellspacing="0" cellpadding="0"
-                    tr.bg_secondary_dark
-                        th.tg-yw41
-                            | Färdig
-                        th.tg-yw41
-                            | Träning
-                        th.tg-yw41
-                            | Sets
-                        th.tg-yw41
-                            | Reps
-                        th.tg-yw41
-                            | Tid
-                        th.tg-yw41
-                            | Distans
-                
-                    - x.each_with_index do |z, color_index|
+        .test
+            h2.header.black87.mb_16px.ml_16px.mt_64px
+                = weekdays[i]
+            .schedule_day.margin_bottom_16px
+                - if x == []
+                    p.ml_16px Ingen träning denna dag
+                - else
+                    table.tg cellspacing="0" cellpadding="0"
+                        tr.bg_secondary_dark
+                            th.tg-yw41
+                                | Färdig
+                            th.tg-yw41
+                                | Träning
+                            th.tg-yw41
+                                | Sets
+                            th.tg-yw41
+                                | Reps
+                            th.tg-yw41
+                                | Tid
+                            th.tg-yw41
+                                | Distans
+                    
+                        - x.each_with_index do |z, color_index|
 
-                        - if color_index.even?
-                            - color = colors[0]
-                        - else
-                            - color = colors[1]
+                            - if color_index.even?
+                                - color = colors[0]
+                            - else
+                                - color = colors[1]
 
-                        tr class="#{color}" onclick="show(#{z.id})"
-                                td.tg-yw41.column_center
-                                    - if z.done == "true"
-                                        i.material-icons check_box
-                                    - else
-                                        i.material-icons check_box_outline_blank
-                                td.tg-yw41
-                                    = z.name
-                                td.tg-yw41
-                                    - if z.excercice_type == "sets_n_reps"
-                                        = z.amount[0]
-                                td.tg-yw41
-                                    - if z.excercice_type == "sets_n_reps"
-                                        = z.amount[1]
-                                td.tg-yw41
-                                    - if z.excercice_type == "time"
-                                td.tg-yw41
-                                    - if z.excercice_type == "distance"
-                                        = z.amount
-                                        |  km
+                            tr class="#{color}" onclick="show(#{z.id})"
+                                    td.tg-yw41.column_center
+                                        - if z.done == "true"
+                                            i.material-icons check_box
+                                        - else
+                                            i.material-icons check_box_outline_blank
+                                    td.tg-yw41
+                                        = z.name
+                                    td.tg-yw41
+                                        - if z.excercice_type == "sets_n_reps"
+                                            = z.amount[0]
+                                    td.tg-yw41
+                                        - if z.excercice_type == "sets_n_reps"
+                                            = z.amount[1]
+                                    td.tg-yw41
+                                        - if z.excercice_type == "time"
+                                    td.tg-yw41
+                                        - if z.excercice_type == "distance"
+                                            = z.amount
+                                            |  km

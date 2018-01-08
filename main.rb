@@ -130,7 +130,8 @@ class Main < Sinatra::Base
             @color = ["#64ffda", "#9effff"]
 
             @percentage_reached = Weight.percentage_of_goal_reached(session[:user_id], session)
-            
+            @weight_goal = Weight.get_goal(id)
+
             erb :weight
             # slim :weight
         else
@@ -139,23 +140,13 @@ class Main < Sinatra::Base
     end
 
     post '/weight' do
-        weight = params['new_weight'].to_f
-
-        if weight <= 0 || weight > 635
-            session[:local] = true
+        if session[:user_id]
+            weight = params['new_weight'].to_f
+            weight_goal = params['weight_goal'].to_f
+            Weight.add(weight, weight_goal, session)
             redirect '/weight'
         else
-            session[:local] = false
-            if session[:user_id]
-                db = SQLite3::Database.open('db/db.sqlite')
-                date = Time.now.strftime("%Y-%m-%d %H:%M")
-                id = session[:user_id]
-
-                db.execute('INSERT INTO weights (kg, date, user_id) VALUES (?,?,?)', [weight, date, id])
-                redirect '/weight'
-            else
-                redirect '/login'
-            end
+            redirect '/login'
         end
     end
 

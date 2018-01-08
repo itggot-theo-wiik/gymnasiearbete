@@ -1,8 +1,59 @@
-<h1 class="header mt_16px">Vikthistorik</h1>
+<div class="weight_page"> 
+        <a href="/">
+            <i class="material-icons">close</i>
+        </a>
 
+        <h1 class="header mt_16px">Vikthistorik</h1>
 
-<canvas id="lineChart" height="300" width="300"></canvas>
+    <div class="weight_page_container">
+        <div id="weight_page_left">
+            <canvas id="lineChart" height="300" width="300"></canvas>
+        </div>
 
-<script>
-    drawGraph(<%= @date_arr %>, <%= @kg_arr %>, <%= @color %>);
-</script>
+        <div id="weight_page_right">
+            <% if session[:error_no_goal] %>
+                <p><%= "Du har inte valt något viktmål, gör det nu! 😁" %></p>
+                <form action="/weight" method="post">
+                    <input type="hidden">
+                    <label for="weight_goal">KG</label>
+                    <input type="text" name="weight_goal" onkeypress="return isNumberKey(event)"></input>
+                    <button type="submit">Sätt som vikt mål</button>
+                </form>
+            <% end %>
+
+            <% if session[:error_no_logged_weight] %>
+                <p class="mt_32px"><%= "Du har inte matat in din vikt, gör det nu så blir det grymt bra. 👌😄" %></p>
+            <% end %>
+
+            <h2 class="header mt_16px">Logga din aktuella vikt</h2>
+
+            <form action="weight" method="post">
+                <label for="new_weight">KG</label>
+                <input type="text" name="new_weight" onkeypress="return isNumberKey(event)"></input>
+                <button type="submit">Lägg till</button>
+            </form>
+
+            <% if @percentage_reached %>
+                <h2 class="header mt_16px">Din framgång</h2>
+                <% if @percentage_reached < 5 %>
+                    <h3 class="header">Kämpa på! 😸</h3>
+                <% elsif @percentage_reached > 5 && @percentage_reached < 100 %>
+                    <h3 class="header">Du har nått <b><%= @percentage_reached.to_i %>%</b> av ditt mål! Herregud vad bra! 😍😱</h3>
+                <% elsif @percentage_reached > 100 %>
+                    <h3 class="header">Du har klarat ditt mål! Tjoohoo vad bra du är!! 🙌😱</h3>
+                <% else %>
+                    <h3 class="header">Det verkar som att du inte har valt något mål ännu, det är lungt, vi fixar det om du vill. Annars kan du bara låta det vara som det är.</h3>
+                <% end %>
+                
+                <% unless session[:error_no_goal] %>
+                    <h2 class="header mt_32px">Rolig fakta</h2>
+                    <h3 class="header">Ditt mål är att nå: <b><%= @weight_goal %></b> kg. Den senaste vikten du loggade var <b><%= @kg_arr.last %></b> kg.<br>Du har gått ner totalt <b><%= @kg_arr.first - @kg_arr.last %></b> kg.<br>Jag vet att du kan klara ditt mål 😌</h3>
+                <% end %>
+            <% end %>
+        </div>
+    </div>
+
+    <script>
+        drawGraph(<%= @date_arr %>, <%= @kg_arr %>, <%= @color %>);
+    </script>
+</div>

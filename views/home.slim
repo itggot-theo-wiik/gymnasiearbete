@@ -9,7 +9,11 @@
             p.eller eller
             a.green_link2 href="/register" registrera dig
 - else
-    .the_rock_img
+    / .the_rock_img
+
+    .parallax-container
+        .parallax
+            img src="/img/dumbbells-2465478_640 (1).jpg"
 
     .cards.mt_16px
         
@@ -74,14 +78,26 @@
             .custom_box
 
         .card.card-2.mb_16px
-                    a href="/learn"
-                        h1.header Lär dig om träning!
-                        .card_content
-                            .row
-                                p Så mycket skoj att lära sig! Är det något du undrar? Ta en titt om vi har svaret!
-                            i.material-icons.big-icon book
-                    
-                    .custom_box
+            a href="/learn"
+                h1.header Lär dig om träning!
+                .card_content
+                    .row
+                        p Så mycket skoj att lära sig! Är det något du undrar? Ta en titt om vi har svaret!
+                    i.material-icons.big-icon book
+            
+            .custom_box
+
+        - if session[:admin]
+            .card.card-2.mb_16px
+                a href="/admin"
+                    h1.header Admin verktyg
+                    .card_content
+                        .row
+                            p Om du ser detta är du en administratör. Du har vissa speciella verktyg, så som att lägga till träningar.
+                        i.material-icons.big-icon settings_applications
+
+                .custom_box
+                    a.dark_blue href="/" Verktyg länk 1
 
     - if session[:check_error]
         .confirm_excercice_container#check_error

@@ -111,6 +111,10 @@ a {
     margin-top: 32px;
 }
 
+.mt_64px {
+    margin-top: 64px;
+}
+
 .ml_4px {
     margin-left: 4px;
 }
@@ -264,6 +268,17 @@ a {
 
 header a {
     color: white;
+}
+
+/* WEIGHT */
+
+.weight_page {
+    padding: 32px;
+}
+
+.weight_page_container {
+    display: flex;
+    flex-direction: column;
 }
 
 
@@ -601,6 +616,7 @@ header {
     padding: 10px 5px;
     overflow: hidden;
     word-break: normal;
+    text-align: center;
 }
 
 .tg th {
@@ -614,6 +630,37 @@ header {
 
 .tg .tg-yw4l {
     vertical-align: top
+}
+
+
+/* Parallax */
+
+.parallax-container {
+    position: relative;
+    overflow: hidden;
+    height: 170px;
+}
+
+.parallax-container .parallax {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+}
+
+.parallax-container .parallax img {
+    display: none;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
 }
 
 @media (min-width: 900px) {
@@ -635,5 +682,17 @@ header {
     .tg {
         min-width: 0px;
         width: 900px;
+    }
+    .parallax-container {
+        display: none;
+    }
+    .weight_page_container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+    #weight_page_left {
+        width: 500px;
+        margin-right: 64px;
     }
 }
