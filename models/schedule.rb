@@ -181,16 +181,7 @@ class Schedule
             if day
                 output = []
                 i = 0
-
                 excercices = db.execute('SELECT * FROM excercices WHERE difficulty <= ? AND goal_id IS ?', [strictness, goals])
-
-                # if db.execute('SELECT * FROM excercices WHERE difficulty <= ? AND goal_id IS ?', [strictness, goals]) == nil
-                #     puts "ESKEDA!"
-                #     puts "Translation: Its empty"
-                #     gets
-                # else
-                #     excercices = db.execute('SELECT * FROM excercices WHERE difficulty <= ? AND goal_id IS ?', [strictness, goals])
-                # end
 
                 # Repeats the loop until the difficulty is reached
                 while i < strictness
@@ -217,7 +208,7 @@ class Schedule
                         # i = strictness
 
                         # Ver 2
-                        # (i += backup[2]) will make it so that it will contuine the loop
+                        # (i += backup[2].to_i) will make it so that it will contuine the loop, and thus making it possible to have a more difficult schedule than intended
                         i += backup[2].to_i
                     else
                         # Found succesfull excercice
@@ -258,4 +249,13 @@ class Schedule
         return distance
     end
 
+    def self.get_goals()
+        db = SQLite3::Database.open('db/db.sqlite')
+        return db.execute('SELECT * FROM goals')
+    end
+
+    def self.add_goal(name,sets,reps,distance,time)
+        db = SQLite3::Database.open('db/db.sqlite')
+        db.execute('INSERT INTO goals (name, sets, reps, distance, time) VALUES (?,?,?,?,?)', [name,sets,reps,distance,time])
+    end
 end

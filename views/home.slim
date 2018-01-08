@@ -58,7 +58,7 @@
                         
 
         
-        .card.card-2.mb_16px
+        .card.card-2.mb_16px#quote
             a href="/#"
                 h1.header
         
@@ -75,7 +75,27 @@
                         p Logga din vikt, se din framgång! Här kan du kolla hur långt du har kommit på ditt mål, samt ändra den om du så skulle vela! Klicka på mig!
                     i.material-icons.big-icon trending_down
             
-            .custom_box
+            .custom_box.pt_16px.pl_16px.pb_16px
+                h2.header Dina framsteg
+
+                - if @percentage_reached
+                    - if @percentage_reached < 5
+                        h4.header Kämpa på! 😸
+                    - elsif @percentage_reached > 5 && @percentage_reached < 100
+                        h4.header
+                            | Du har nått
+                            |  
+                            = @percentage_reached.to_i
+                            | % av ditt mål! Herregud vad bra! 😍😱
+                    - elsif @percentage_reached > 100
+                        h4.header Du har klarat ditt mål! Tjoohoo vad bra du är!! 🙌😱
+                    - else
+                        h4.header Du har inte valt något mål, det kan du göra här om du känner dig redo för det! 😉
+                - else
+                    a href="/weight"
+                        h4.header
+                            | Det verkar som att du inte har valt något mål ännu, det är lungt, vi fixar det om du vill. Annars kan du bara låta det vara som det är. Tryck på mig för att ta ändra din vikt mål!
+
 
         .card.card-2.mb_16px
             a href="/learn"
@@ -86,6 +106,32 @@
                     i.material-icons.big-icon book
             
             .custom_box
+
+        .card.card-2.mb_16px
+            a href="/my-profile"
+                h1.header Min Profil
+                .card_content
+                    .row
+                        p Fränt! Du har din egna profil! Det skulle man inte kunna tro! Du kan även lägga till vänner och kolla vad dem har klarat för mål. Klicka på mig för att ta dig dit 🙋
+                    i.material-icons.big-icon person
+
+            .custom_box.pt_16px.pl_16px.pb_16px
+                h2.header 
+                    | Dina poäng:
+                    |  
+                    = @user.points
+                - if @user.points == 0
+                    h4.header Du har inga poäng just nu, men jag är helt säker på att du kommer att få en massa snart 😌. Du får poäng genom att klara av dina träningar. 
+                - elsif @user.points > 0 && @user.points < 10
+                    h4.header Nu börjar poängen rulla in 🤑
+                - elsif @user.points > 10 && @user.points < 50
+                    h4.header Du börjar fatta det här nu ju!
+                - elsif @user.points > 50 && @user.points < 100
+                    h4.header Du badar i poäng! 😲
+                - elsif @user.points > 50 && @user.points < 100
+                    h4.header Nu snackar vi poäng! 🎉
+                - else
+                    h4.header ... 😱
 
         - if session[:admin]
             .card.card-2.mb_16px

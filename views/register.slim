@@ -27,7 +27,7 @@ form.margin_bottom_16px action="/register" method="post"
       select name="goals"
         - @goals.each do |goal|
           option value="#{goal.first}"
-            = goal.last
+            = goal[1]
 
     .question
       fieldset.removeBorder name="strictness"

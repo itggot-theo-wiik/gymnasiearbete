@@ -1,0 +1,107 @@
+div style="margin-left:16px;margin-top:16px"
+    h1.header Olika mål
+
+    h3.header Lägg till ny (kolla först så att en sådan inte redan existerar)
+
+    form action="/admin/goals" method="post"
+        table.mt_32px
+            tbody
+                tr.bg_secondary_light
+                    td
+                        p
+                            | id
+                    td
+                        p
+                tr.bg_secondary
+                    td
+                        p
+                            | name
+                    td
+                        p
+                            input type="text" name="name"
+                tr.bg_secondary_light
+                    td
+                        p
+                            | sets
+                            
+                    td
+                        p
+                            input type="text" name="sets"
+                tr.bg_secondary
+                    td
+                        p
+                            | reps
+                    td
+                        p
+                            input type="text" name="reps"
+                tr.bg_secondary_light
+                    td
+                        p
+                            | distance
+                    td
+                        p
+                            input type="text" name="distance"
+
+                tr.bg_secondary
+                    td
+                        p
+                            | time
+                    td
+                        p
+                            input type="text" name="time"
+                tr.bg_secondary_light
+                    td
+                        p
+                    td
+                        p
+                            button type="submit" Lägg till
+
+    h3.header Aktulla mål
+
+    - @goals.each do |goal|
+        table.mt_32px
+            tbody
+                tr.bg_secondary_light
+                    td
+                        p
+                            | id
+                    td
+                        p
+                            = goal[0]
+                tr.bg_secondary
+                    td
+                        p
+                            | name
+                    td
+                        p
+                            = goal[1]
+                tr.bg_secondary_light
+                    td
+                        p
+                            | sets
+                            
+                    td
+                        p
+                            = goal[2]
+                tr.bg_secondary
+                    td
+                        p
+                            | reps
+                    td
+                        p
+                            = goal[3]
+                tr.bg_secondary_light
+                    td
+                        p
+                            | distance
+                    td
+                        p
+                            = goal[4]
+
+                tr.bg_secondary
+                    td
+                        p
+                            | time
+                    td
+                        p
+                            = goal[5]

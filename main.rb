@@ -7,6 +7,8 @@ class Main < Sinatra::Base
             @quote = Quote.random()
             @user = Users.one(session[:user_id].to_i)
             @schedule = Schedule.get2(session[:user_id])
+            @percentage_reached = Weight.percentage_of_goal_reached(session[:user_id], session)
+            @weight_goal = Weight.get_goal(session[:user_id])
         end
 
         slim :home
@@ -205,5 +207,28 @@ class Main < Sinatra::Base
         else
             redirect '/'
         end 
+    end
+
+    get '/admin/goals' do
+        if session[:admin]
+            @goals = Schedule.get_goals()
+            slim :'admin/goals'
+        else
+            redirect '/'
+        end 
+    end
+
+    post '/admin/goals' do
+        if session[:admin]
+            name = params['name']
+            sets = params['sets']
+            reps = params['reps']
+            distance = params['distance']
+            time = params['time']
+            Schedule.add_goal(name,sets,reps,distance,time)
+            redirect '/admin/goals'
+        else
+            redirect '/'
+        end
     end
 end
