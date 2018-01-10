@@ -8,13 +8,14 @@ class Schedule
         @excercice_id = excercice[0][0]
         @name = excercice[0][1]
         @done = excercice[1]
-        p done
-        p "---------------------"
+
         @excercice_type = excercice[3]
 
         if @excercice_type == "sets_n_reps"
             db = SQLite3::Database.open('db/db.sqlite')
-            @amount = db.execute('SELECT sets, reps FROM users WHERE id IS ?', excercice[4]).first
+            # @amount = db.execute('SELECT sets, reps FROM users WHERE id IS ?', excercice[4]).first
+            user_id = db.execute('SELECT id FROM users WHERE id IS (SELECT user_id FROM weekly_schedules WHERE id IS ?)', @id.to_i).first.first
+            @amount = Schedule.calc_sets_and_reps(user_id, @excercice_id.to_i, 3)
         elsif @excercice_type == "time"
             # @amount = 
         elsif @excercice_type == "distance"
@@ -24,34 +25,6 @@ class Schedule
         # p @amount
 
     end
-
-    # def self.get(user_id)
-    #     db = SQLite3::Database.open('db/db.sqlite')
-    #     schedule = []
-    #     7.times do |day|
-    #         # ---------------------------
-    #         id_for_exercices = db.execute('SELECT excercice_id FROM schedules WHERE user_id IS ? AND day IS ?', [user_id, (day + 1)])
-    #         dayly = []
-    #         id_for_exercices.each do |x|
-    #             dayly << db.execute('SELECT * FROM excercices WHERE id IS ?', x.first).first
-    #         end
-
-    #         custom_excercices = db.execute('SELECT * FROM custom_excercices WHERE user_id IS ? AND day IS ?', [user_id, day])
-    #         custom_excercices.each do |x|
-    #             dayly << x
-    #         end
-
-    #         version_two = []
-
-    #         dayly.each do |excercice|
-    #             version_two << Schedule.new(excercice)
-    #         end
-
-    #         schedule << version_two
-    #     end
-
-    #     return schedule
-    # end
 
     def self.get2(user_id, non_completed_only = false)
         db = SQLite3::Database.open('db/db.sqlite')
@@ -95,7 +68,7 @@ class Schedule
 
             schedule << temp
         end
-        
+
         return schedule
     end
 
@@ -222,15 +195,64 @@ class Schedule
         end
     end
 
-    def self.calc_sets_and_reps(user_id)
+    def self.calc_sets_and_reps(user_id, excercice_id, step)
         db = SQLite3::Database.open('db/db.sqlite')
-        feedback = db.execute('SELECT feedback FROM weekly_schedules WHERE feedback_active IS ? AND user_id IS ?', ["true", user_id])
-        sets_and_reps = db.execute('SELECT sets, reps FROM users WHERE user_id IS ?', user_id).first
-        feedback.each do |x|
-            if x
+        goal_sets_n_reps = db.execute('SELECT sets, reps FROM goals WHERE id IS (SELECT goal_id FROM users WHERE id IS ?)', user_id).first
+        sets_limits = db.execute('SELECT min_sets, max_sets FROM goals WHERE id IS (SELECT goal_id FROM users WHERE id IS ?)', user_id).first
+        reps_limits = db.execute('SELECT min_reps, max_reps FROM goals WHERE id IS (SELECT goal_id FROM users WHERE id IS ?)', user_id).first
+        feedback = db.execute('SELECT feedback FROM weekly_schedules WHERE user_id IS ? AND active = ? AND excercice_id = ?', [user_id, "true", excercice_id])
+    
+        p goal_sets_n_reps
+        p sets_limits
+        p reps_limits
 
+        # Change the sets and reps based on difficulty
+
+        feedback.each do |x|
+            if x.first != nil
+                if x.first == 1
+                    # To easy
+                    if (goal_sets_n_reps[1] + step) > reps_limits[1]
+                        # To many reps, needs to higher the sets
+                        if (goal_sets_n_reps[0] + 1) > sets_limits[1]
+                            # It will be over the maximum amount of sets allowed, sets the reps to the max.
+                            goal_sets_n_reps[1] = reps_limits[1]                            
+                        else
+                            # Adds set
+                            goal_sets_n_reps[0] += 1
+                            # Sets rep to what its supposed to be
+                            goal_sets_n_reps[1] = ((step - (reps_limits[1] - goal_sets_n_reps[1])) + (reps_limits[0] - 1))
+                            # ((adderade - (högsta - nuvarande)) + (minsta - 1))
+                        end
+
+                    else
+                        goal_sets_n_reps[1] += step
+                    end
+                elsif x.first == 3
+                    # To hard
+                    if (goal_sets_n_reps[1] - step) < reps_limits[0]
+                        # To little reps, needs to lower the sets
+                        if (goal_sets_n_reps[0] - 1) < sets_limits[0]
+                            # It will be under the minimum amount of sets allowed, sets the reps to the lowest possible.
+                            goal_sets_n_reps[1] = reps_limits[0]
+                        else
+                            goal_sets_n_reps[0] -= 1
+                            # Sets rep to what its supposed to be
+                            goal_sets_n_reps[1] = (( - step + (goal_sets_n_reps[1] - reps_limits[0])) + (reps_limits[1] + 1))
+                            # (-adderade + (nuvarande - minsta) + (högsta + 1))
+                        end
+                    else
+                        goal_sets_n_reps[1] -= step
+                    end
+                end
             end
         end
+
+        p "under mig B"
+        p goal_sets_n_reps
+        
+        return goal_sets_n_reps
+
     end
 
     def self.calc_distance(user_id)
@@ -258,4 +280,5 @@ class Schedule
         db = SQLite3::Database.open('db/db.sqlite')
         db.execute('INSERT INTO goals (name, sets, reps, distance, time) VALUES (?,?,?,?,?)', [name,sets,reps,distance,time])
     end
+
 end

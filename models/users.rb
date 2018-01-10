@@ -79,7 +79,7 @@ class Users
                 distance = 0.5
             end
             sets_and_reps = db.execute('SELECT sets, reps FROM goals WHERE id IS ?', goal).first
-            db.execute('INSERT INTO users (username, email, first_name, last_name, password, points, weight_goal, distance, sets, reps) VALUES (?,?,?,?,?,?,?,?,?,?)', [username, mail, fname, lname, password, 0, weight_goal, distance.to_f, sets_and_reps[0], sets_and_reps[1]])
+            db.execute('INSERT INTO users (username, email, first_name, last_name, password, points, weight_goal, distance, sets, reps, goal_id) VALUES (?,?,?,?,?,?,?,?,?,?,?)', [username, mail, fname, lname, password, 0, weight_goal, distance.to_f, sets_and_reps[0], sets_and_reps[1], goal])
 
             # Log all the answers
             unless day1

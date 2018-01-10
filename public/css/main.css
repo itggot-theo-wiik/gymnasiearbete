@@ -672,6 +672,16 @@ header {
     transform: translateX(-50%);
 }
 
+.ugly_graph {
+    height: 100vh;
+    width: 100vw;
+    z-index: 2;
+    background-color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
 @media (min-width: 900px) {
     main {
         width: 900px;
