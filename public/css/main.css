@@ -595,6 +595,10 @@ header {
     display: block;
 }
 
+.ugly_graph {
+    display: none;
+}
+
 .excercice_image {
     height: 200px;
     width: calc(100vw - 48px);

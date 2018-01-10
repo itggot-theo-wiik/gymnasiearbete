@@ -17,7 +17,17 @@ function setup() {
 	width_percentage = 0.9;
 
 	// Create the canvas
-	createCanvas(width, height);
+	// createCanvas(width, height);
+
+	
+	// START OF DANGER
+	var cnv = createCanvas(width, height);
+	cnv.parent("sketchHolder");
+
+	// var cnv2 = createCanvas(width, height);
+	// cnv2.parent("sketchHolder2");
+	// END OF DANGER
+
 
 	// Calculate the step length in pixels in x-axis
 	// step = (width / (x.length - 1)) - 16;

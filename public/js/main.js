@@ -141,4 +141,4 @@ function extremeFunction() {
     console.log("hekk");
 }
 
-extremeFunction()
+extremeFunction();
