@@ -156,6 +156,17 @@ class Schedule
                 i = 0
                 excercices = db.execute('SELECT * FROM excercices WHERE difficulty <= ? AND goal_id IS ?', [strictness, goals])
 
+                if strictness.to_i == 1
+                    # Easy
+                    strictness = 6
+                elsif strictness.to_i == 2
+                    # Medium
+                    strictness = 8
+                else
+                    # Hard
+                    strictness = 10
+                end
+
                 # Repeats the loop until the difficulty is reached
                 while i < strictness
                     random_integer = rand(excercices.size)
@@ -182,12 +193,20 @@ class Schedule
 
                         # Ver 2
                         # (i += backup[2].to_i) will make it so that it will contuine the loop, and thus making it possible to have a more difficult schedule than intended
+                        puts "daushiduashudhiaduhaiusdhiasudh"
+                        p backup[2].to_i
+                        puts "jdsuiahdsadhiadaisuduahdhiuhiuh"
                         i += backup[2].to_i
                     else
                         # Found succesfull excercice
                         excercices.delete_at(random_integer)
                         output << random_exercice
                         db.execute('INSERT INTO schedules (user_id,day,excercice_id) VALUES (?,?,?)', [user_id,day,random_exercice[0]])
+
+                        puts "daushiduashudhiaduhaiusdhiasudh"
+                        p random_exercice[2].to_i
+                        puts "jdsuiahdsadhiadaisuduahdhiuhiuh"
+                        
                         i += random_exercice[2].to_i
                     end
                 end
