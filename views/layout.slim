@@ -60,7 +60,8 @@ html
 			  li.nav_list_48px
 				i#nav_icon.material-icons home
 				p.black87 Hem
-			a href="/schedule" 
+			- day = Time.now.strftime('%A').downcase
+			a href="/schedule##{day}" 
 			  li.nav_list_48px
 				i#nav_icon.material-icons date_range
 				p.black87 Schema

@@ -67,7 +67,7 @@ class Main < Sinatra::Base
         if Users.create(username, mail, fname, lname, password, session, weight_goal, distance, goals.to_i, day1, day2, day3, day4, day5, day6, day7, strictness)
             # Create custom schedual
             user_id = Users.get_id_from_username(username)
-            Schedule.create(day1,day2,day3,day4,day5,day6,day7,strictness.to_i,goals.to_i,user_id)
+            Schedule.create2(day1,day2,day3,day4,day5,day6,day7,strictness.to_i,goals.to_i,user_id)
             redirect '/my-profile'
         else
             redirect '/register'
@@ -76,8 +76,8 @@ class Main < Sinatra::Base
 
     get '/schedule' do
         if session[:user_id]
-            # @schedule = Schedule.get(session[:user_id])
             @schedule = Schedule.get2(session[:user_id])
+            @day = Time.now.strftime('%A').downcase
             slim :schedule
         else
             redirect '/login'

@@ -9,8 +9,6 @@
             p.eller eller
             a.green_link2 href="/register" registrera dig
 - else
-    / .the_rock_img
-
     .parallax-container
         .parallax
             img src="/img/dumbbells-2465478_640 (1).jpg"
@@ -18,7 +16,8 @@
     .cards.mt_16px
         
         .card.card-2.mb_16px
-            a href="/schedule"
+            - day = Time.now.strftime('%A').downcase
+            a href="/schedule##{day}"
                 h1.header Ditt schema! 🏋
                 .card_content
                     .row

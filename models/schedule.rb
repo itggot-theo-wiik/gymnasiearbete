@@ -193,22 +193,91 @@ class Schedule
 
                         # Ver 2
                         # (i += backup[2].to_i) will make it so that it will contuine the loop, and thus making it possible to have a more difficult schedule than intended
-                        puts "daushiduashudhiaduhaiusdhiasudh"
-                        p backup[2].to_i
-                        puts "jdsuiahdsadhiadaisuduahdhiuhiuh"
                         i += backup[2].to_i
                     else
                         # Found succesfull excercice
                         excercices.delete_at(random_integer)
                         output << random_exercice
                         db.execute('INSERT INTO schedules (user_id,day,excercice_id) VALUES (?,?,?)', [user_id,day,random_exercice[0]])
-
-                        puts "daushiduashudhiaduhaiusdhiasudh"
-                        p random_exercice[2].to_i
-                        puts "jdsuiahdsadhiadaisuduahdhiuhiuh"
                         
                         i += random_exercice[2].to_i
                     end
+                end
+            end
+        end
+    end
+
+    def self.create2(day1,day2,day3,day4,day5,day6,day7,strictness,goals,user_id)
+        db = SQLite3::Database.open('db/db.sqlite')
+        days = [day1,day2,day3,day4,day5,day6,day7]
+
+        # Does it include a running excercice?
+        excercices = db.execute('SELECT * FROM excercices WHERE goal_id IS ?', goals)
+        run = false
+        excercices.each do |x|
+            if x[4] == 3
+                run = true
+            end
+        end
+        
+        days.each do |day|
+            if day
+                output = []
+                i = 0
+                excercices = db.execute('SELECT * FROM excercices WHERE goal_id IS ?', goals).sample
+
+                if strictness.to_i == 1
+                    # Easy
+                    strictness = 6
+                elsif strictness.to_i == 2
+                    # Medium
+                    strictness = 8
+                else
+                    # Hard
+                    strictness = 10
+                end
+
+                if run == true
+                    run = false
+                    random_exercice = db.execute('SELECT * FROM excercices WHERE goal_id IS ? AND excercice_type IS ?', [goals, 3]).sample
+
+                    output << random_exercice
+                    db.execute('INSERT INTO schedules (user_id,day,excercice_id) VALUES (?,?,?)', [user_id,day,random_exercice[0]])
+                    i += 1
+                else
+                    # Is it a running excercice?
+                    if random_exercice.sample[4] == 3
+                        # It is
+                    else
+                        # It is not
+
+                        # Adds other excercices
+                        # Repeats the loop until the difficulty is reached
+                        while i < strictness
+                            # random_integer = rand(excercices.size)
+                            # random_exercice = excercices[random_integer]
+
+                            if random_exercice != nil
+                                # No more excercices
+                                while true
+                                    random_exercice = db.execute('SELECT * FROM excercices WHERE goal_id IS ? AND excercice_type IS ?', [goals, 1]).sample
+
+                                    # Is it a running excercice?
+                                    if random_exercice[4] != 3 || random_exercice[4] != "3"
+                                        break
+                                    end
+                                end
+                            end
+
+                            output << random_exercice
+                            db.execute('INSERT INTO schedules (user_id,day,excercice_id) VALUES (?,?,?)', [user_id,day,random_exercice[0]])
+
+                            i += 1
+                        end
+                    end
+                    
+
+                    
                 end
             end
         end
@@ -220,10 +289,6 @@ class Schedule
         sets_limits = db.execute('SELECT min_sets, max_sets FROM goals WHERE id IS (SELECT goal_id FROM users WHERE id IS ?)', user_id).first
         reps_limits = db.execute('SELECT min_reps, max_reps FROM goals WHERE id IS (SELECT goal_id FROM users WHERE id IS ?)', user_id).first
         feedback = db.execute('SELECT feedback FROM weekly_schedules WHERE user_id IS ? AND active = ? AND excercice_id = ?', [user_id, "true", excercice_id])
-    
-        p goal_sets_n_reps
-        p sets_limits
-        p reps_limits
 
         # Change the sets and reps based on difficulty
 
@@ -267,9 +332,6 @@ class Schedule
             end
         end
 
-        p "under mig B"
-        p goal_sets_n_reps
-        
         return goal_sets_n_reps
 
     end

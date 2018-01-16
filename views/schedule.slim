@@ -37,11 +37,15 @@ a#hello href="bla"
 
 .schedule
     - weekdays = ["Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag","Söndag"]
+    - weekdays_eng = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
     - colors = ["bg_secondary_light", "bg_secondary"]
     - @schedule.each_with_index do |x, i|
-        .test
-            h2.header.black87.mb_16px.ml_16px.mt_64px
+
+        .quick_link id="#{weekdays_eng[i]}"
+        .test.pt_32px.pb_32px.mt_32px
+            h2.header.black87.ml_16px.mb_16px
                 = weekdays[i]
+
             .schedule_day.margin_bottom_16px
                 - if x == []
                     p.ml_16px Ingen träning denna dag
