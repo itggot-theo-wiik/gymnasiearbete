@@ -222,9 +222,10 @@ class Schedule
         
         days.each do |day|
             if day
+                # There are excercices this day
                 output = []
                 i = 0
-                excercices = db.execute('SELECT * FROM excercices WHERE goal_id IS ?', goals).sample
+                # excercices = db.execute('SELECT * FROM excercices WHERE goal_id IS ?', goals)
 
                 if strictness.to_i == 1
                     # Easy
@@ -239,38 +240,46 @@ class Schedule
 
                 if run == true
                     run = false
+                    
                     random_exercice = db.execute('SELECT * FROM excercices WHERE goal_id IS ? AND excercice_type IS ?', [goals, 3]).sample
 
                     output << random_exercice
                     db.execute('INSERT INTO schedules (user_id,day,excercice_id) VALUES (?,?,?)', [user_id,day,random_exercice[0]])
-                    i += 1
                 else
+
+                    excercices = db.execute('SELECT * FROM excercices WHERE goal_id IS ?', goals)
+                    
                     # Is it a running excercice?
-                    if random_exercice.sample[4] == 3
+                    if excercices.sample[4] == 3
                         # It is
+
+                        # Lägg till en träning, men sluta efter det
+                        random_exercice = db.execute('SELECT * FROM excercices WHERE goal_id IS ? AND excercice_type IS ?', [goals, 3]).sample
+                        output << random_exercice
+                        db.execute('INSERT INTO schedules (user_id,day,excercice_id) VALUES (?,?,?)', [user_id,day,random_exercice[0]])
                     else
                         # It is not
+
+                        excercices = db.execute('SELECT * FROM excercices WHERE goal_id IS ? AND excercice_type IS ?', [goals, 1])
 
                         # Adds other excercices
                         # Repeats the loop until the difficulty is reached
                         while i < strictness
-                            # random_integer = rand(excercices.size)
-                            # random_exercice = excercices[random_integer]
+                            random_integer = rand(excercices.size)
+                            random_exercice = excercices[random_integer]
 
-                            if random_exercice != nil
+                            if random_exercice == nil
                                 # No more excercices
-                                while true
-                                    random_exercice = db.execute('SELECT * FROM excercices WHERE goal_id IS ? AND excercice_type IS ?', [goals, 1]).sample
-
-                                    # Is it a running excercice?
-                                    if random_exercice[4] != 3 || random_exercice[4] != "3"
-                                        break
-                                    end
-                                end
+                                puts "jag kom in här"
+                                gets
+                                random_exercice = db.execute('SELECT * FROM excercices WHERE goal_id IS ? AND excercice_type IS ?', [goals, 1]).sample
+                            else
+                                # Delete
+                                excercices.delete_at(random_integer)
                             end
 
                             output << random_exercice
-                            db.execute('INSERT INTO schedules (user_id,day,excercice_id) VALUES (?,?,?)', [user_id,day,random_exercice[0]])
+                            db.execute('INSERT INTO schedules (user_id, day, excercice_id) VALUES (?,?,?)', [user_id,day,random_exercice[0]])
 
                             i += 1
                         end
