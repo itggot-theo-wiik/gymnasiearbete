@@ -70,6 +70,7 @@ main {
     height: 60px;
 }
 
+
 /* Button */
 
 button {
@@ -279,6 +280,43 @@ header a {
     color: white;
 }
 
+.fixed_notification {
+    background-color: yellow;
+    border-top-left-radius: 8px;
+    padding: 4px;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    height: 60px;
+    width: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.fixed_notification_left {
+    background-color: yellow;
+    border-top-right-radius: 8px;
+    padding: 4px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 60px;
+    width: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile_icon_container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
 /* WEIGHT */
 

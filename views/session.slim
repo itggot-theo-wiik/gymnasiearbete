@@ -45,16 +45,24 @@
                             h1.header Image
 
                         .reps_and_sets
-                            .row
-                                .column
-                                    h1.header Sets
-                                    h1
-                                        = z.amount[0]
+                            - if z.excercice_type == 1
+                                .row
+                                    .column
+                                        h1.header Sets
+                                        h1
+                                            = z.amount[0]
 
-                                .column
-                                    h1.header Reps
-                                    h1
-                                        = z.amount[1]
+                                    .column
+                                        h1.header Reps
+                                        h1
+                                            = z.amount[1]
+                            - elsif z.excercice_type == 2
+                                .row
+                                    .column
+                                        h1.header Tid
+                                        h1
+                                            = z.amount
+                                            |  min
 
                         .excercice_nav
                             - if (i + 2) > x.size

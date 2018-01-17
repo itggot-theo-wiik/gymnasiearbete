@@ -17,7 +17,7 @@ class Schedule
             user_id = db.execute('SELECT id FROM users WHERE id IS (SELECT user_id FROM weekly_schedules WHERE id IS ?)', @id.to_i).first.first
             @amount = Schedule.calc_sets_and_reps(user_id, @excercice_id.to_i, 3)
         elsif @excercice_type == "time"
-            # @amount = 
+            @amount = Schedule.calc_time(@user_id.to_i)
         elsif @excercice_type == "distance"
             @amount = Schedule.calc_distance(@user_id.to_i)
         end
@@ -31,6 +31,8 @@ class Schedule
         weekly_schedule = db.execute('SELECT * FROM weekly_schedules WHERE user_id IS ?', user_id)
         year = Time.now.strftime('%Y')
         week = Time.now.strftime('%W')
+
+        # Check if added days...
 
         if weekly_schedule == nil || weekly_schedule == [] || year.to_i != weekly_schedule.last[4].to_i || week.to_i != weekly_schedule.last[5].to_i
             # No weekly schedule for this user
@@ -51,10 +53,9 @@ class Schedule
                 # Only un-completed excercices
                 excercices = db.execute('SELECT * FROM weekly_schedules WHERE user_id IS ? AND day IS ? AND year IS ? AND week IS ? AND done IS ?', [user_id, (day + 1), year, week, "false"])
             else
-                excercices = db.execute('SELECT * FROM weekly_schedules WHERE user_id IS ? AND day IS ? AND year IS ? AND week IS ?', [user_id, (day + 1), year, week])
+                excercices = db.execute('SELECT * FROM weekly_schedules WHERE user_id IS ? AND day IS ? AND year IS ? AND week IS ? AND active IS ?', [user_id, (day + 1), year, week, "true"])
             end
             
-
             dayly = []
             excercices.each do |x|
                 # [names of the excercices, bla, bla, type of excercice, user id]
@@ -259,9 +260,20 @@ class Schedule
                         db.execute('INSERT INTO schedules (user_id,day,excercice_id) VALUES (?,?,?)', [user_id,day,random_exercice[0]])
                     else
                         # It is not
+                        excercices = []
 
-                        excercices = db.execute('SELECT * FROM excercices WHERE goal_id IS ? AND excercice_type IS ?', [goals, 1])
+                        # sets and reps
+                        sets_n_reps_excercices = db.execute('SELECT * FROM excercices WHERE goal_id IS ? AND excercice_type IS ?', [goals, 1])
+                        sets_n_reps_excercices.each do |x|
+                            excercices << x
+                        end
 
+                        # time
+                        time_excercices = db.execute('SELECT * FROM excercices WHERE goal_id IS ? AND excercice_type IS ?', [goals, 2])
+                        time_excercices.each do |x|
+                            excercices << x
+                        end
+                        
                         # Adds other excercices
                         # Repeats the loop until the difficulty is reached
                         while i < strictness
@@ -270,6 +282,8 @@ class Schedule
 
                             if random_exercice == nil
                                 # No more excercices
+                                puts random_integer
+                                puts random_exercice
                                 puts "jag kom in här"
                                 gets
                                 random_exercice = db.execute('SELECT * FROM excercices WHERE goal_id IS ? AND excercice_type IS ?', [goals, 1]).sample
@@ -359,6 +373,23 @@ class Schedule
             end  
         end
         return distance
+    end
+
+    def self.calc_time(user_id)
+        db = SQLite3::Database.open('db/db.sqlite')
+        feedback = db.execute('SELECT feedback FROM weekly_schedules WHERE feedback_active IS ? AND user_id IS ? AND excercice_id IN (SELECT id FROM excercices WHERE excercice_type IS (SELECT id FROM excercice_type WHERE type IS ?))', ["true", user_id, "time"])
+        # time = db.execute('SELECT ')
+        time = 1
+        feedback.each do |x|
+            if x.first == 1
+                # Too easy
+                time += 0.2
+            elsif x.first == 3
+                # To hard
+                time -= 0.1
+            end  
+        end
+        return time
     end
 
     def self.get_goals()

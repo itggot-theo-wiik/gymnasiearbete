@@ -68,7 +68,7 @@ class Main < Sinatra::Base
             # Create custom schedual
             user_id = Users.get_id_from_username(username)
             Schedule.create2(day1,day2,day3,day4,day5,day6,day7,strictness.to_i,goals.to_i,user_id)
-            redirect '/my-profile'
+            redirect '/'
         else
             redirect '/register'
         end
@@ -90,6 +90,23 @@ class Main < Sinatra::Base
         puts feedback
         Schedule.check(id, session, feedback)
         redirect '/schedule'
+    end
+
+    post '/schedule/remove' do
+        id = params['id'].to_i
+        db = SQLite3::Database.open('db/db.sqlite')
+        db.execute('UPDATE weekly_schedules SET active = "false" WHERE id IS ?', id)
+        redirect '/schedule'
+    end
+
+    post '/schedule/reset' do
+        if session[:user_id]
+            db = SQLite3::Database.open('db/db.sqlite')
+            db.execute('UPDATE weekly_schedules SET active = "true" WHERE user_id IS ?', session[:user_id].to_i)
+            redirect '/schedule'
+        else
+            redirect '/'
+        end
     end
 
     get '/user' do

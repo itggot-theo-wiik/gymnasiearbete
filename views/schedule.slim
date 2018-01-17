@@ -49,6 +49,10 @@ a#hello href="bla"
             .schedule_day.margin_bottom_16px
                 - if x == []
                     p.ml_16px Ingen träning denna dag
+                    form.ml_16px action="/" method="post"
+                        button.row_center type="submit"
+                            i.material-icons add
+                            | lägg till
                 - else
                     table.tg cellspacing="0" cellpadding="0"
                         tr.bg_secondary_dark
@@ -64,6 +68,8 @@ a#hello href="bla"
                                 | Tid
                             th.tg-yw41
                                 | Distans
+                            th.tg-yw41
+                                | Ta bort
                     
                         - x.each_with_index do |z, color_index|
 
@@ -88,7 +94,24 @@ a#hello href="bla"
                                             = z.amount[1]
                                     td.tg-yw41
                                         - if z.excercice_type == "time"
+                                            = z.amount
+                                            |  min
                                     td.tg-yw41
                                         - if z.excercice_type == "distance"
                                             = z.amount
                                             |  km
+                                    td.tg-yw41
+                                        form action="/schedule/remove" method="post"
+                                            input type="hidden" value="#{z.id}" name="id"
+                                            button type="submit"
+                                                i.material-icons delete
+
+
+form.ml_16px.mb_16px action="/schedule/reset" method="post"
+    button type="submit" Återställ ditt schema
+
+.fixed_notification
+    a href="##{@day}" Visa dagens träningar
+
+.fixed_notification_left
+    a href="/excercice-session" Starta dagens tränings session
