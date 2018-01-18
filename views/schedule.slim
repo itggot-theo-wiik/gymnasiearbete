@@ -46,6 +46,11 @@ a#hello href="bla"
             h2.header.black87.ml_16px.mb_16px
                 = weekdays[i]
 
+            - if weekdays_eng[i] == Time.now.strftime('%A').downcase && x != []
+                a href="/excercice-session"
+                    p.text_secondary_dark.ml_16px.mb_16px
+                        | Tryck på mig för att starta en "tränings session"!
+
             .schedule_day.margin_bottom_16px
                 - if x == []
                     p.ml_16px Ingen träning denna dag
@@ -61,13 +66,7 @@ a#hello href="bla"
                             th.tg-yw41
                                 | Träning
                             th.tg-yw41
-                                | Sets
-                            th.tg-yw41
-                                | Reps
-                            th.tg-yw41
-                                | Tid
-                            th.tg-yw41
-                                | Distans
+                                | Mängd
                             th.tg-yw41
                                 | Ta bort
                     
@@ -88,17 +87,28 @@ a#hello href="bla"
                                         = z.name
                                     td.tg-yw41
                                         - if z.excercice_type == "sets_n_reps"
-                                            = z.amount[0]
-                                    td.tg-yw41
-                                        - if z.excercice_type == "sets_n_reps"
-                                            = z.amount[1]
-                                    td.tg-yw41
+                                            .column
+                                                .row
+                                                    = z.amount[0]
+                                                    |  sets
+                                                .row.mt_8px
+                                                    = z.amount[1]
+                                                    |  reps
                                         - if z.excercice_type == "time"
-                                            = z.amount
-                                            |  min
-                                    td.tg-yw41
+                                            - minutes = (z.amount*100).round / 100.0
+                                            - seconds = ((minutes.modulo(1) * 60)*100).round / 100.0
+                                            - p minutes
+                                            - p seconds
+                                            .column
+                                                .row
+                                                    = minutes.to_i
+                                                    |  minuter
+                                                - if seconds != 0.0
+                                                    .row.mt_8px
+                                                        = seconds
+                                                        |  sekunder
                                         - if z.excercice_type == "distance"
-                                            = z.amount
+                                            = (z.amount*100).round / 100.0
                                             |  km
                                     td.tg-yw41
                                         form action="/schedule/remove" method="post"
@@ -113,5 +123,5 @@ form.ml_16px.mb_16px action="/schedule/reset" method="post"
 .fixed_notification
     a href="##{@day}" Visa dagens träningar
 
-.fixed_notification_left
-    a href="/excercice-session" Starta dagens tränings session
+/ .fixed_notification_left
+/     a href="/excercice-session" Starta dagens tränings session

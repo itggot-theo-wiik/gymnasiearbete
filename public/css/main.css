@@ -109,6 +109,10 @@ a {
     font-weight: 300;
 }
 
+.mt_8px {
+    margin-top: 8px;
+}
+
 .mt_16px {
     margin-top: 16px;
 }
@@ -163,6 +167,11 @@ a {
 
 .pb_16px {
     padding-bottom: 16px;
+}
+
+.row_space_apart {
+    justify-content: space-around;
+    width: 100%;
 }
 
 
@@ -265,6 +274,14 @@ a {
     color: #00ca51;
 }
 
+.register_button {
+    margin-left: auto;
+    margin-right: auto;
+    height: 60px;
+    min-width: 100px;
+    font-size: 1.4em
+}
+
 
 /* GRAPHS */
 
@@ -317,6 +334,7 @@ header a {
     justify-content: center;
     align-items: center;
 }
+
 
 /* WEIGHT */
 
@@ -633,6 +651,7 @@ header {
     left: 0;
     position: fixed;
     display: none;
+
 }
 
 .show {
@@ -652,6 +671,9 @@ header {
 
 .excercice_nav {
     display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
     flex-direction: row;
     justify-content: space-around;
     bottom: 16px;
@@ -687,6 +709,16 @@ header {
 
 .tg .tg-yw4l {
     vertical-align: top
+}
+
+.session_page {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 
@@ -767,6 +799,31 @@ header {
     }
     #quote_box {
         height: auto;
+    }
+    .session_container {
+        height: 100vh;
+        width: 100%;
+    }
+    .max-width-900px {
+        width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .todo_box {
+        width: 100%;
+    }
+    .start_session_container {
+        width: 900px;
+    }
+    .excercice_image {
+        width: 900px;
+    }
+    .excercice_content {
+        width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .excercice {
     }
 }
 

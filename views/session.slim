@@ -1,89 +1,105 @@
 .session_container.bg_secondary_dark
-    a href="/schedule"
-        i.material-icons.mb_16px close
-    h1.header Nu tränar vi! 💪
-    h3.header I denna session skall
-    h3.header du göra det följande:
-    .todo_box.bg_secondary_light.mt_16px
+    .max-width-900px
+        a href="/schedule"
+            i.material-icons.mb_16px close
+        h1.header Nu tränar vi! 💪
+        h3.header I denna session skall
+        h3.header du göra det följande:
 
-        - day = (Schedule.day_in_integer() - 1)
-        - @schedule.each_with_index do |x, i|
+        .todo_box.bg_secondary_light.mt_16px
 
-            - if i == day
+            - day = (Schedule.day_in_integer() - 1)
+            - @schedule.each_with_index do |x, i|
+
+                - if i == day
+                    - if x == []
+                        h4.header Du är redan färdig för idag. Men om du känner att du har mycket energi kvar skulle vi rekommendera att du gör detta! 😌
+                        - @no_exercices = true
+
+                    - else
+                        -x.each do |z|
+                            .row
+                                    p
+                                        i.material-icons label_outline
+                                    p
+                                        = z.name
+
+        - unless @no_exercices
+            .start_session_container.mt_32px    
+                button.bg_secondary_light onclick="session_show(1)"
+                    h1.header Kör igång!
+
+        - @schedule.each_with_index do |x, day_i|
+            - if day_i == day
                 - if x == []
-                    h4.header Du är redan färdig för idag. Men om du känner att du har mycket energi kvar skulle vi rekommendera att du gör detta! 😌
-                    - @no_exercices = true
-
+                    / Do nothing
                 - else
-                    -x.each do |z|
-                        .row
-                                p
-                                    i.material-icons label_outline
-                                p
+                    -x.each_with_index do |z, i|
+                        - p i
+                        .excercice.bg_secondary_dark id="#{i+1}"
+                            .excercice_content
+                                h1.mt_16px.ml_16px.header
+                                    = i + 1
+                                    | #
+                                    |  
                                     = z.name
 
-    - unless @no_exercices
-        .start_session_container.mt_32px    
-            button.bg_secondary_light onclick="session_show(1)"
-                h1.header Kör igång!
+                                .excercice_image.mt_32px.bg_secondary_light
+                                    h1.header Image
 
-    - @schedule.each_with_index do |x, day_i|
-        - if day_i == day
-            - if x == []
-                / Do nothing
-            - else
-                -x.each_with_index do |z, i|
-                    - p i
-                    .excercice.bg_secondary_dark id="#{i+1}"
-                        h1.mt_16px.ml_16px.header
-                            = i + 1
-                            | #
-                            |  
-                            = z.name
+                                .reps_and_sets.column_center.mt_16px
+                                    - if z.excercice_type == "sets_n_reps"
+                                        .row.row_space_apart
+                                            .column_center
+                                                h1.header Sets
+                                                h1
+                                                    = z.amount[0]
 
-                        .excercice_image.mt_32px.bg_secondary_light
-                            h1.header Image
+                                            .column_center
+                                                h1.header Reps
+                                                h1
+                                                    = z.amount[1]
+                                    - elsif z.excercice_type == "time"
+                                        - minutes = (z.amount*100).round / 100.0
+                                        - seconds = ((minutes.modulo(1) * 60)*100).round / 100.0
+                                        .row.row_space_apart
+                                            .column_center
+                                                h1.header Minuter
+                                                h1
+                                                    = minutes.to_i
 
-                        .reps_and_sets
-                            - if z.excercice_type == 1
-                                .row
-                                    .column
-                                        h1.header Sets
-                                        h1
-                                            = z.amount[0]
+                                            .column_center
+                                                h1.header Sekunder
+                                                h1
+                                                    = seconds.to_i
+                                    - elsif z.excercice_type == "distance"
+                                        .row
+                                            .column
+                                                h1.header Distans
+                                                h1
+                                                    = z.amount
+                                                    |  km
 
-                                    .column
-                                        h1.header Reps
-                                        h1
-                                            = z.amount[1]
-                            - elsif z.excercice_type == 2
-                                .row
-                                    .column
-                                        h1.header Tid
-                                        h1
-                                            = z.amount
-                                            |  min
+                                .excercice_nav
+                                    - if (i + 2) > x.size
+                                        .row
+                                            i.material-icons.mr_8px arrow_back
+                                            p Tillbaka
 
-                        .excercice_nav
-                            - if (i + 2) > x.size
-                                .row
-                                    i.material-icons.mr_8px arrow_back
-                                    p Tillbaka
+                                        a href="/schedule"
+                                            .row
+                                                form action="/excercice-session" method="post"
+                                                    / Returns a list of the excercices which has been completed
+                                                    - array = []
+                                                    - x.each_with_index do |id|
+                                                        - array << id.id
+                                                    input type="hidden" value="#{array.join(",")}" name="excercices"
+                                                    button type="submit"Färdig! 🙌
+                                    - else 
+                                        .row
+                                            i.material-icons.mr_8px arrow_back
+                                            p Tillbaka
 
-                                a href="/schedule"
-                                    .row
-                                        form action="/excercice-session" method="post"
-                                            / Returns a list of the excercices which has been completed
-                                            - array = []
-                                            - x.each_with_index do |id|
-                                                - array << id.id
-                                            input type="hidden" value="#{array.join(",")}" name="excercices"
-                                            button type="submit"Färdig! 🙌
-                            - else 
-                                .row
-                                    i.material-icons.mr_8px arrow_back
-                                    p Tillbaka
-
-                                .row onclick="session_show(#{i + 2})"
-                                    p.mr_8px Nästa!
-                                    i.material-icons arrow_forward
+                                        .row onclick="session_show(#{i + 2})"
+                                            p.mr_8px Nästa!
+                                            i.material-icons arrow_forward

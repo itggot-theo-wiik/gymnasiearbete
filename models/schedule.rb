@@ -17,7 +17,7 @@ class Schedule
             user_id = db.execute('SELECT id FROM users WHERE id IS (SELECT user_id FROM weekly_schedules WHERE id IS ?)', @id.to_i).first.first
             @amount = Schedule.calc_sets_and_reps(user_id, @excercice_id.to_i, 3)
         elsif @excercice_type == "time"
-            @amount = Schedule.calc_time(@user_id.to_i)
+            @amount = Schedule.calc_time(@user_id.to_i, @excercice_id.to_i)
         elsif @excercice_type == "distance"
             @amount = Schedule.calc_distance(@user_id.to_i)
         end
@@ -362,31 +362,44 @@ class Schedule
     def self.calc_distance(user_id)
         db = SQLite3::Database.open('db/db.sqlite')
         feedback = db.execute('SELECT feedback FROM weekly_schedules WHERE feedback_active IS ? AND user_id IS ? AND excercice_id IN (SELECT id FROM excercices WHERE excercice_type IS (SELECT id FROM excercice_type WHERE type IS ?))', ["true", user_id, "distance"])
-        distance = 5
+        # distance = 5
+        distance = db.execute('SELECT distance FROM users WHERE id IS ?', user_id).first.first
+
+        step = 0.15
+
         feedback.each do |x|
             if x.first == 1
                 # Too easy
-                distance += 0.15
+                distance += step
             elsif x.first == 3
                 # To hard
-                distance -= 0.15
+                if (distance - step) >= 0.25
+                    distance -= step
+                end
             end  
         end
         return distance
     end
 
-    def self.calc_time(user_id)
+    def self.calc_time(user_id, excercice_id)
         db = SQLite3::Database.open('db/db.sqlite')
-        feedback = db.execute('SELECT feedback FROM weekly_schedules WHERE feedback_active IS ? AND user_id IS ? AND excercice_id IN (SELECT id FROM excercices WHERE excercice_type IS (SELECT id FROM excercice_type WHERE type IS ?))', ["true", user_id, "time"])
+        # feedback = db.execute('SELECT feedback FROM weekly_schedules WHERE feedback_active IS ? AND user_id IS ? AND excercice_id IN (SELECT id FROM excercices WHERE excercice_type IS (SELECT id FROM excercice_type WHERE type IS ?))', ["true", user_id, "time"])
+        feedback = db.execute('SELECT feedback FROM weekly_schedules WHERE user_id IS ? AND active = ? AND excercice_id = ?', [user_id, "true", excercice_id])
         # time = db.execute('SELECT ')
         time = 1
+        time = db.execute('SELECT time FROM goals WHERE id IS (SELECT goal_id FROM users WHERE id IS ?)', user_id).first.first
+
+        step = 0.2
+
         feedback.each do |x|
             if x.first == 1
                 # Too easy
-                time += 0.2
+                time += step
             elsif x.first == 3
                 # To hard
-                time -= 0.1
+                if (time - step) >= 0.4
+                    time -= step
+                end
             end  
         end
         return time
