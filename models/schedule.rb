@@ -161,6 +161,7 @@ class Schedule
                 if gym == "true" || gym == true
                     # Acces to gym
                     excercices = db.execute('SELECT * FROM excercices WHERE difficulty <= ? AND goal_id IS ?', [strictness, goals])
+                    p excercices
                 else
                     # No gym :dab:
                     excercices = db.execute('SELECT * FROM excercices WHERE difficulty <= ? AND goal_id IS ? AND gym IS ?', [strictness, goals, 0])
@@ -221,6 +222,8 @@ class Schedule
         db = SQLite3::Database.open('db/db.sqlite')
         days = [day1,day2,day3,day4,day5,day6,day7]
 
+        easy_medium_hard = strictness.to_i
+
         # Does it include a running excercice?
         excercices = db.execute('SELECT * FROM excercices WHERE goal_id IS ?', goals)
         run = false
@@ -237,10 +240,10 @@ class Schedule
                 i = 0
                 # excercices = db.execute('SELECT * FROM excercices WHERE goal_id IS ?', goals)
 
-                if strictness.to_i == 1
+                if easy_medium_hard == 1
                     # Easy
                     strictness = 6
-                elsif strictness.to_i == 2
+                elsif easy_medium_hard == 2
                     # Medium
                     strictness = 8
                 else
@@ -259,6 +262,16 @@ class Schedule
 
                     excercices = db.execute('SELECT * FROM excercices WHERE goal_id IS ?', goals)
                     
+                    gym = db.execute('SELECT gym FROM users WHERE id IS ?', user_id.to_i).first.first
+                    if gym == "true" || gym == true
+                        # Acces to gym
+                        excercices = db.execute('SELECT * FROM excercices WHERE goal_id IS ?', goals)
+                    else
+                        # No gym :dab:
+                        excercices = db.execute('SELECT * FROM excercices WHERE goal_id IS ? AND gym IS ?', [goals, 1])
+                    end
+
+
                     # Is it a running excercice?
                     if excercices.sample[4] == 3
                         # It is
@@ -271,8 +284,17 @@ class Schedule
                         # It is not
                         excercices = []
 
+                        gym = db.execute('SELECT gym FROM users WHERE id IS ?', user_id.to_i).first.first
+                        if gym == "true" || gym == true
+                            # Acces to gym
+                            sets_n_reps_excercices = db.execute('SELECT * FROM excercices WHERE goal_id IS ?', goals)
+                        else
+                            # No gym :dab:
+                            sets_n_reps_excercices = db.execute('SELECT * FROM excercices WHERE goal_id IS ? AND gym IS ?', [goals, 1])
+                        end
+
                         # sets and reps
-                        sets_n_reps_excercices = db.execute('SELECT * FROM excercices WHERE goal_id IS ? AND excercice_type IS ?', [goals, 1])
+                        # sets_n_reps_excercices = db.execute('SELECT * FROM excercices WHERE goal_id IS ? AND excercice_type IS ?', [goals, 1])
                         sets_n_reps_excercices.each do |x|
                             excercices << x
                         end
@@ -291,10 +313,6 @@ class Schedule
 
                             if random_exercice == nil
                                 # No more excercices
-                                puts random_integer
-                                puts random_exercice
-                                puts "jag kom in här"
-                                gets
                                 random_exercice = db.execute('SELECT * FROM excercices WHERE goal_id IS ? AND excercice_type IS ?', [goals, 1]).sample
                             else
                                 # Delete
@@ -307,9 +325,6 @@ class Schedule
                             i += 1
                         end
                     end
-                    
-
-                    
                 end
             end
         end
