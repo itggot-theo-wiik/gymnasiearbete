@@ -322,8 +322,49 @@ class Schedule
         reps_limits = db.execute('SELECT min_reps, max_reps FROM goals WHERE id IS (SELECT goal_id FROM users WHERE id IS ?)', user_id).first
         feedback = db.execute('SELECT feedback FROM weekly_schedules WHERE user_id IS ? AND active = ? AND excercice_id = ?', [user_id, "true", excercice_id])
 
-        # Change the sets and reps based on difficulty
+        step = 3
 
+        # Change the sets and reps based on difficulty
+        difficulty = db.execute('SELECT difficulty FROM excercices WHERE id IS ?', excercice_id.to_i).first.first
+
+        # FUL FIX
+        if difficulty == "1"
+            # To easy
+            if (goal_sets_n_reps[1] + step) > reps_limits[1]
+                # To many reps, needs to higher the sets
+                if (goal_sets_n_reps[0] + 1) > sets_limits[1]
+                    # It will be over the maximum amount of sets allowed, sets the reps to the max.
+                    goal_sets_n_reps[1] = reps_limits[1]                            
+                else
+                    # Adds set
+                    goal_sets_n_reps[0] += 1
+                    # Sets rep to what its supposed to be
+                    goal_sets_n_reps[1] = ((step - (reps_limits[1] - goal_sets_n_reps[1])) + (reps_limits[0] - 1))
+                    # ((adderade - (högsta - nuvarande)) + (minsta - 1))
+                end
+
+            else
+                goal_sets_n_reps[1] += step
+            end
+        elsif difficulty == "3"
+            # To hard
+            if (goal_sets_n_reps[1] - step) < reps_limits[0]
+                # To little reps, needs to lower the sets
+                if (goal_sets_n_reps[0] - 1) < sets_limits[0]
+                    # It will be under the minimum amount of sets allowed, sets the reps to the lowest possible.
+                    goal_sets_n_reps[1] = reps_limits[0]
+                else
+                    goal_sets_n_reps[0] -= 1
+                    # Sets rep to what its supposed to be
+                    goal_sets_n_reps[1] = (( - step + (goal_sets_n_reps[1] - reps_limits[0])) + (reps_limits[1] + 1))
+                    # (-adderade + (nuvarande - minsta) + (högsta + 1))
+                end
+            else
+                goal_sets_n_reps[1] -= step
+            end
+        end
+
+        # FOR FEEDBACK
         feedback.each do |x|
             if x.first != nil
                 if x.first == 1
@@ -374,7 +415,7 @@ class Schedule
         # distance = 5
         distance = db.execute('SELECT distance FROM users WHERE id IS ?', user_id).first.first
 
-        step = 0.15
+        step = 0.5
 
         feedback.each do |x|
             if x.first == 1
@@ -398,7 +439,21 @@ class Schedule
         time = 1
         time = db.execute('SELECT time FROM goals WHERE id IS (SELECT goal_id FROM users WHERE id IS ?)', user_id).first.first
 
-        step = 0.2
+        step = 0.33
+
+        # Change the sets and reps based on difficulty
+        difficulty = db.execute('SELECT difficulty FROM excercices WHERE id IS ?', excercice_id.to_i).first.first
+
+        # FUL FIX
+        if difficulty == "1"
+            # Too easy
+            time += step
+        elsif difficulty == "3"
+            # To hard
+            if (time - step) >= 0.4
+                time -= step
+            end
+        end  
 
         feedback.each do |x|
             if x.first == 1

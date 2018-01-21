@@ -78,10 +78,10 @@ class Main < Sinatra::Base
             # Gym
             if gym == "0" || gym == 0
                 # Yes
-                db.execute('INSERT INTO users SET gym = ? WHERE id IS ?', ["true", user_id])
+                db.execute('UPDATE users SET gym = ? WHERE id IS ?', ["true", user_id])
             else
                 # No
-                db.execute('INSERT INTO users SET gym = ? WHERE id IS ?', ["false", user_id])
+                db.execute('UPDATE users SET gym = ? WHERE id IS ?', ["false", user_id])
             end
 
             # Create custom schedual
