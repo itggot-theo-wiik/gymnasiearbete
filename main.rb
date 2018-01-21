@@ -49,7 +49,6 @@ class Main < Sinatra::Base
         fname = params['fname']
         lname = params['lname']
         password = params['password']
-        password = BCrypt::Password.create(password)
         mail = params['mail']
         goals = params['goals']
         strictness = params['strictness']
@@ -62,11 +61,30 @@ class Main < Sinatra::Base
         day7 = params['day7']
         weight_goal = params['weight_goal'].to_f
         distance = params['distance']
+        gym = params['gym']
+
+        # Is everything filled in?
+        if username == nil || fname == nil || lname == nil || password == nil || mail == nil || goals == nil || strictness == nil || gym == nil
+            redirect '/register'
+        end
+
+        password = BCrypt::Password.create(password)
 
         # Create a new profile
         if Users.create(username, mail, fname, lname, password, session, weight_goal, distance, goals.to_i, day1, day2, day3, day4, day5, day6, day7, strictness)
-            # Create custom schedual
+
             user_id = Users.get_id_from_username(username)
+
+            # Gym
+            if gym == "0" || gym == 0
+                # Yes
+                db.execute('INSERT INTO users SET gym = ? WHERE id IS ?', ["true", user_id])
+            else
+                # No
+                db.execute('INSERT INTO users SET gym = ? WHERE id IS ?', ["false", user_id])
+            end
+
+            # Create custom schedual
             Schedule.create2(day1,day2,day3,day4,day5,day6,day7,strictness.to_i,goals.to_i,user_id)
             redirect '/'
         else

@@ -88,10 +88,22 @@ form.margin_bottom_16px action="/register" method="post"
         option value="1.5" 1.5 km
         option value="2" 2 km
 
+    .question
+      fieldset.removeBorder name="gym"
+        legend Tränar du på gym / har du tillgång till ett gym?
+        .column
+          .row
+            input#radio name="gym" type="radio" value="0" /
+            label for="gym" Ja
+          .row
+            input#radio name="gym" type="radio" value="1" /
+            label for="gym" Nej
+
     button.register_button.bg_secondary type="submit"  Skapa konto
 
-h1.header.ml_16px Har du redan ett konto?
+.mt_32px
+  h1.header.ml_16px Har du redan ett konto?
 
-button.login_button
-  a href="/login"
-    | Logga in
+  button.login_button
+    a href="/login"
+      | Logga in

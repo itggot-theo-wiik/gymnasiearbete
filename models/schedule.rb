@@ -155,17 +155,26 @@ class Schedule
             if day
                 output = []
                 i = 0
-                excercices = db.execute('SELECT * FROM excercices WHERE difficulty <= ? AND goal_id IS ?', [strictness, goals])
+
+                gym = db.execute('SELECT gym FROM users WHERE id IS ?', user_id.to_i).first.first
+
+                if gym == "true" || gym == true
+                    # Acces to gym
+                    excercices = db.execute('SELECT * FROM excercices WHERE difficulty <= ? AND goal_id IS ?', [strictness, goals])
+                else
+                    # No gym :dab:
+                    excercices = db.execute('SELECT * FROM excercices WHERE difficulty <= ? AND goal_id IS ? AND gym IS ?', [strictness, goals, 0])
+                end
 
                 if strictness.to_i == 1
                     # Easy
-                    strictness = 6
+                    strictness = 4
                 elsif strictness.to_i == 2
                     # Medium
-                    strictness = 8
+                    strictness = 6
                 else
                     # Hard
-                    strictness = 10
+                    strictness = 8
                 end
 
                 # Repeats the loop until the difficulty is reached
