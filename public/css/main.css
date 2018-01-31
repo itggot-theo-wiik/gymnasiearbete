@@ -70,7 +70,6 @@ main {
     height: 60px;
 }
 
-
 /* Button */
 
 button {
@@ -86,9 +85,7 @@ button {
     margin-left: 16px;
 }
 
-
 /* TEXT */
-
 
 /* 
 a {
@@ -174,7 +171,6 @@ a {
     width: 100%;
 }
 
-
 /* p {
     font-size: 14px;
 } */
@@ -182,7 +178,6 @@ a {
 a {
     color: inherit;
 }
-
 
 /* COLORS */
 
@@ -282,14 +277,12 @@ a {
     font-size: 1.4em
 }
 
-
 /* GRAPHS */
 
 #lineChart {
     width: calc(100vw - 64);
     max-width: 800px;
 }
-
 
 /* HEADER */
 
@@ -335,7 +328,6 @@ header a {
     align-items: center;
 }
 
-
 /* WEIGHT */
 
 .weight_page {
@@ -350,7 +342,6 @@ header a {
 #weight_page_left {
     margin-bottom: 64px;
 }
-
 
 /* REGISTER */
 
@@ -430,7 +421,6 @@ header {
     margin-bottom: 92px;
 }
 
-
 /* ICONS */
 
 .icon,
@@ -450,13 +440,11 @@ header {
     padding: 16px;
 }
 
-
 /* Login Screen */
 
 .login_text {
     margin-bottom: 16px;
 }
-
 
 /* Home */
 
@@ -596,7 +584,6 @@ header {
     font-size: 12px !important;
 }
 
-
 /* Boxes */
 
 #quote_box {
@@ -610,7 +597,6 @@ header {
 #quote_box h3 {
     font-family: 'Petit Formal Script', cursive;
 }
-
 
 /* SESSION */
 
@@ -651,7 +637,6 @@ header {
     left: 0;
     position: fixed;
     display: none;
-
 }
 
 .show {
@@ -720,7 +705,6 @@ header {
     display: flex;
     flex-direction: column;
 }
-
 
 /* Parallax */
 
@@ -823,7 +807,9 @@ header {
         margin-left: auto;
         margin-right: auto;
     }
-    .excercice {
+    .excercice {}
+    .login_button {
+        right: auto;
     }
 }
 
